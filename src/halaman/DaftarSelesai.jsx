@@ -930,7 +930,7 @@ function DaftarSelesai() {
           </button>
         </div> */}
         <ToolkitProvider
-          keyField="no"
+          keyField="id"
           data={numberedData}
           columns={columns}
           bootstrap4

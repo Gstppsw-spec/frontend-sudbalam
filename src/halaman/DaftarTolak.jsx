@@ -714,13 +714,20 @@ const DaftarTolak = (props) => {
       // },
     },
   ];
-  const sizePerPageList = [
-    { text: '10', value: 10 },
-    { text: '25', value: 25 },
-    { text: '50', value: 50 },
-    { text: '100', value: 100 },
-    { text: '200', value: 200 },
-  ];
+  const options = {
+    paginationSize: 3,
+    pageStartIndex: 1,
+    // showTotal: true,
+    // paginationTotalRenderer: customTotal,
+    // disablePageTitle: true,
+    sizePerPageList : [
+      { text: "10", value: 10, className: "my-custom-page-size" },
+      { text: "25", value: 25, className: "my-custom-page-size" },
+      { text: "50", value: 50, className: "my-custom-page-size" },
+      { text: "100", value: 100, className: "my-custom-page-size" },
+      // { text: "200", value: 200, className: "my-custom-page-size" },
+    ]
+  }
   return (
     <main className="body">
       <div className="datatableTitle">
@@ -755,10 +762,7 @@ const DaftarTolak = (props) => {
               </ExportCSVButton> */}
                 <BootstrapTable
                   {...props.baseProps}
-                  pagination={paginationFactory({
-                    sizePerPageList: sizePerPageList,
-                    sizePerPage: 100,
-                  })}
+                  pagination={paginationFactory(options)}
                   wrapperClasses="table-responsive"
                 />
               </div>

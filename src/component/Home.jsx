@@ -159,13 +159,9 @@ const Home = () => {
       </main>
       <br />
       <br />
-      <div className="footer fixed-bottom">
-        <div className="container">
-          <div align="center">
-            <small>Sistem Penyaluran Dana Santunan Kematian &copy; 2022</small>
-          </div>
-        </div>
-      </div>
+      <footer className="footer">
+        Sistem Penyaluran Dana Santunan Kematian &copy; 2022
+      </footer>
     </div>
   );
 };

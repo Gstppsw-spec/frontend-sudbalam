@@ -16,8 +16,10 @@ import DataPembayaranTeam from "./halaman/DataPembayaranTeam";
 import EditPengajuan from "./halaman/EditPengajuan";
 import DataTolak from "./halaman/DataTolak";
 import EditSelesai from "./halaman/EditSelesai";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { EditPembayaran } from "./halaman/EditPembayaran";
-// import './App.css'
+import './App.css'
+
 
 
 // function disableRightClick(event) {

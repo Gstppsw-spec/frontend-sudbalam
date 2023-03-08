@@ -27,6 +27,10 @@
   font-size: 9px;
 }
 
+.col-lg-6 {
+  flex: 0 0 auto;
+  width: 10%;
+}
 /* .sortable{
   background-color: grey;
   font-weight: bold;
@@ -71,19 +75,23 @@ td{
 }
 
 .excel {
-  background-color: white;
-  margin-top: 1%;
+  /* background-color: white; */
+  margin-top: 2%;
   margin-bottom: 1%;
+  font-weight: bold;
+ 
 }
 
 .export-excel {
-  background-color: #ad241b;
-  justify-content: left;
-  width: 10%;
+  background-color: gray;
+  /* justify-content: left; */
+  /* width: 10%; */
   border: none;
+  /* color: black; */
   border-radius: 3px;
-  font-size: 12px;
+  font-size: 15px;
   padding: 10px;
+  font-weight: bold;
   cursor: pointer;
 }
 
@@ -183,15 +191,15 @@ img {
 
   .excel {
     background-color: white;
-    margin-top: 1%;
+    margin-top: 2%;
     margin-bottom: 1%;
     font-family: "Poppins", sans-serif;
   }
 
   .export-excel {
-    background-color: #ad241b;
-    justify-content: left;
-    width: 30%;
+    background-color: gray;
+    /* justify-content: left; */
+    /* width: 30%; */
     font-size: 10px;
     padding: -10px;
   }

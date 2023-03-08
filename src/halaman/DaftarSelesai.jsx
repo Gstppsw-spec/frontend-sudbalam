@@ -284,6 +284,7 @@ import ToolkitProvider, {
 } from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit";
 import Swal from "sweetalert2";
 import axios from "axios";
+import filterFactory, {selectFilter} from "react-bootstrap-table2-filter";
 
 function DaftarSelesai() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -461,6 +462,13 @@ function DaftarSelesai() {
   const numberedData = items.map((item, index) => {
     return { ...item, no: getNumber(index) };
   });
+
+  // const selectOptions = {
+  //   0: 'Sukabumi',
+  //   1: 'Bad',
+  //   2: 'unknown'
+  // };
+
   const columns = [
     {
       dataField: "no",
@@ -651,6 +659,7 @@ function DaftarSelesai() {
         paddingTop: "1rem",
         paddingBottom: "1rem",
         cursor: "pointer",
+        // width: '100px',
       },
     },
     {
@@ -768,6 +777,10 @@ function DaftarSelesai() {
         paddingBottom: "1rem",
         cursor: "pointer",
       },
+      // formatter: cell => selectOptions[cell],
+      // filter: selectFilter({
+      //   options: selectOptions
+      // })
     },
     {
       dataField: "tgl_alm",
@@ -901,8 +914,29 @@ function DaftarSelesai() {
     { text: "25", value: 25, className: "my-custom-page-size" },
     { text: "50", value: 50, className: "my-custom-page-size" },
     { text: "100", value: 100, className: "my-custom-page-size" },
-    { text: "200", value: 200, className: "my-custom-page-size" },
+    // { text: "200", value: 200, className: "my-custom-page-size" },
   ];
+
+  const customTotal = (from, to, size) => (
+    <span className="react-bootstrap-table-pagination-total">
+      menampilkan { from } hingga { to } dari { size } data
+    </span>
+  );
+
+  const options = {
+    paginationSize: 3,
+    pageStartIndex: 1,
+    // showTotal: true,
+    // paginationTotalRenderer: customTotal,
+    // disablePageTitle: true,
+    sizePerPageList : [
+      { text: "10", value: 10, className: "my-custom-page-size" },
+      { text: "25", value: 25, className: "my-custom-page-size" },
+      { text: "50", value: 50, className: "my-custom-page-size" },
+      { text: "100", value: 100, className: "my-custom-page-size" },
+      // { text: "200", value: 200, className: "my-custom-page-size" },
+    ]
+  }
 
   // const options = {
   //   paginationSize: 5,
@@ -929,6 +963,7 @@ function DaftarSelesai() {
             export to excel
           </button>
         </div> */}
+        
         <ToolkitProvider
           keyField="id"
           data={numberedData}
@@ -936,6 +971,7 @@ function DaftarSelesai() {
           bootstrap4
           search
           defaultSorted={defaultSorted}
+          // filter={ filterFactory() }
         >
           {(props) => (
             <div>
@@ -951,24 +987,23 @@ function DaftarSelesai() {
                 </Col>
               </Row>
 
+              
+              <BootstrapTable
+                {...props.baseProps}
+                pagination={paginationFactory(options)}
+                // pagination={paginationFactory(options)}
+                wrapperClasses="table-responsive"
+                filter={ filterFactory() }
+              />
               {/* <ExportCSVButton {...props.csvProps}>
                 Export CSV!!
               </ExportCSVButton> */}
-              <BootstrapTable
-                {...props.baseProps}
-                pagination={paginationFactory({
-                  sizePerPageList: sizePerPageList,
-                  sizePerPage: 100,
-                })}
-                // pagination={paginationFactory(options)}
-                wrapperClasses="table-responsive"
-              />
             </div>
           )}
         </ToolkitProvider>
         <div className="excel">
           <button onClick={handleExport} className="export-excel">
-            export to excel
+            <span>Export to Excel</span>
           </button>
         </div>
       </main>

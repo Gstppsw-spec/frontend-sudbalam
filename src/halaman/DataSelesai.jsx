@@ -10,8 +10,8 @@ const DataSelesai = () => {
       <Navbar />
 
       <DaftarSelesai />
-      <br /><br /><br /><br />
-
+    
+<br /><br />
       <footer className="footer">
         Sistem Penyaluran Dana Santunan Kematian &copy; 2022
       </footer>

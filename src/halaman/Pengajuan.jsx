@@ -25,7 +25,52 @@ const Pengajuan = () => {
   const [tlpn_waris, setTlpn_Waris] = useState("");
   const [filterPengajuan, setFilterPengajuan] = useState([]);
   const [filterAkte, setFilterAkte] = useState([]);
+  const [namaHari, setNamaHari] = useState("");
 
+  function handleChange(e) {
+    const date = new Date(e.target.value);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const namaHariBaru = new Intl.DateTimeFormat("id-ID", options).format(date);
+    setTgl_Alm(e.target.value);
+    setNamaHari(namaHariBaru);
+  }
+
+  const hasilNamaAlm = nama_waris
+    .toLowerCase()
+    .split(" ")
+    .map((kata) => kata.charAt(0).toUpperCase() + kata.slice(1))
+    .join(" ");
+
+  const hasilNamaWaris = nama_alm
+    .toLowerCase()
+    .split(" ")
+    .map((kata) => kata.charAt(0).toUpperCase() + kata.slice(1))
+    .join(" ");
+
+  const hasilAlamat = alamat_alm
+    .toLowerCase()
+    .split(" ")
+    .map((kata) => kata.charAt(0).toUpperCase() + kata.slice(1))
+    .join(" ");
+
+  const hasilKelurahan = kelurahan_alm
+    .toLowerCase()
+    .split(" ")
+    .map((kata) => kata.charAt(0).toUpperCase() + kata.slice(1))
+    .join(" ");
+
+  const hasilKecamatan = kecamatan_alm
+    .toLowerCase()
+    .split(" ")
+    .map((kata) => kata.charAt(0).toUpperCase() + kata.slice(1))
+    .join(" ");
+
+  const hasilAkte = no_akte.toUpperCase();
   // useEffect(() => {
   //   fetch("hhtp://apisudbalam.sudbalam.com/api/data")
   // })
@@ -65,6 +110,22 @@ const Pengajuan = () => {
   const createProduct = async (e) => {
     e.preventDefault();
 
+    const isConfirm = await Swal.fire({
+      title: "Yakin data sudah benar?",
+      text: "Data pengajuan akan dikirimkan!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+    }).then((result) => {
+      return result.isConfirmed;
+    });
+
+    if (!isConfirm) {
+      return;
+    }
+
     setLoading(true);
 
     const formData = new FormData();
@@ -78,7 +139,6 @@ const Pengajuan = () => {
           })}
         </div>
       );
-      
     } else if (Array.isArray(filterAkte) && filterAkte.length) {
       setLoading(false);
       return (
@@ -104,11 +164,11 @@ const Pengajuan = () => {
       formData.append("nama_alm", nama_alm);
       formData.append("nik_waris", nik_waris);
       formData.append("nama_waris", nama_waris);
-      formData.append("no_akte", no_akte);
+      formData.append("no_akte", hasilAkte);
       formData.append("alamat_alm", alamat_alm);
-      formData.append("kelurahan_alm", kelurahan_alm);
-      formData.append("kecamatan_alm", kecamatan_alm);
-      formData.append("tgl_alm", tgl_alm);
+      formData.append("kelurahan_alm", hasilKelurahan);
+      formData.append("kecamatan_alm", hasilKecamatan);
+      formData.append("tgl_alm", namaHari);
       formData.append("jam_alm", jam_alm);
       formData.append("tlpn_waris", tlpn_waris);
     }
@@ -121,12 +181,15 @@ const Pengajuan = () => {
           text: data.message,
         });
         setLoading(false);
+
         navigate("/");
       })
       .catch(({ response }) => {
         if (response.status === 422) {
           setValidationError(response.data.errors);
+          setLoading(true);
         } else {
+          setLoading(true);
           Swal.fire({
             text: response.data.message,
             icon: "error",
@@ -181,7 +244,6 @@ const Pengajuan = () => {
       <main className="body">
         <div className="judul-pengajuan">
           <h5>PENDAFTARAN PENGAJUAN PENCAIRAN SANTUNAN UANG DUKA</h5>
-          
         </div>
         <form className="form-pengajuan" onSubmit={createProduct}>
           <div className="form-group">
@@ -217,10 +279,23 @@ const Pengajuan = () => {
               * contoh : 0909-KMKLK-09876543-1234 = 0909098765431234
             </p>
             <p className="note one">
-              * almarhum yang meninggal dibawah umur 17 Tahun dan belum memiliki KTP menggunakan nik sesuai KK
+              * almarhum yang meninggal dibawah umur 17 Tahun dan belum memiliki
+              KTP menggunakan nik sesuai KK
             </p>
           </div>
-
+          <div className="form-group">
+            <label htmlFor="nama">Nomor Akte Kematian</label>
+            <input
+              className="input"
+              placeholder="Nomor Akte Kematian"
+              type="text"
+              value={no_akte}
+              onChange={(event) => {
+                setNo_Akte(event.target.value);
+              }}
+              required
+            />
+          </div>
           <div className="form-group">
             <label htmlFor="nama">Nama Penerima (Ahli Waris)</label>
             <input
@@ -243,19 +318,6 @@ const Pengajuan = () => {
               value={nik_waris}
               onChange={(event) => {
                 setNik_Waris(event.target.value);
-              }}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="nama">Nomor Akte Kematian</label>
-            <input
-              className="input"
-              placeholder="Nomor Akte Kematian"
-              type="text"
-              value={no_akte}
-              onChange={(event) => {
-                setNo_Akte(event.target.value);
               }}
               required
             />
@@ -307,24 +369,35 @@ const Pengajuan = () => {
             <input
               className="input"
               type="date"
+              data-date-format="DD MMMM YYYY"
               value={tgl_alm}
-              onChange={(event) => {
-                setTgl_Alm(event.target.value);
-              }}
+              onChange={handleChange}
               required
+              lang="id"
             />
+            <p>Hari : {namaHari}</p>
+            {/* <DatePicker
+              id="tanggal"
+              selected={tgl_alm}
+              // onChange={(tgl_alm) = setTgl_Alm(tgl_alm) }
+              dateFormat="EEEE, dd MMMM yyyy"
+              locale="id"
+              placeholderText="Tanggal kematian"
+            /> */}
           </div>
           <div className="form-group">
             <label htmlFor="email">Jam Meninggal</label>
             <input
               className="input"
               type="time"
+              // step="1"
               value={jam_alm}
               onChange={(event) => {
                 setJam_Alm(event.target.value);
               }}
               required
             />
+            <p>Jam : {jam_alm} WIB</p>
           </div>
 
           <div className="form-group">
@@ -355,7 +428,6 @@ const Pengajuan = () => {
 };
 
 export default Pengajuan;
-
 
 // import React, { useEffect, useState } from "react";
 // import "../style/pengajuan.css";
@@ -437,7 +509,7 @@ export default Pengajuan;
 //           })}
 //         </div>
 //       );
-      
+
 //     } else if (Array.isArray(filterAkte) && filterAkte.length) {
 //       setLoading(false);
 //       return (
@@ -545,9 +617,9 @@ export default Pengajuan;
 //       <main className="body" id="my-form">
 //         <div className="judul-pengajuan">
 //           <h5>PENDAFTARAN PENGAJUAN PENCAIRAN SANTUNAN UANG DUKA</h5>
-          
+
 //         </div>
-        
+
 //         <form className="form-pengajuan" onSubmit={createProduct}>
 //           <div className="form-group">
 //             <label htmlFor="nama">Nama Almarhum</label>
@@ -705,7 +777,7 @@ export default Pengajuan;
 //               required
 //             />
 //           </div>
-            
+
 //           <button className="button" disabled={loading} type="submit">
 //             KIRIM
 //           </button>
@@ -728,18 +800,18 @@ export default Pengajuan;
 //               color: 'white';
 //               visibility: hidden;
 //             }
-          
+
 //             ::-webkit-input-placeholder {
 //               color: 'white';
 //               visibility: hidden;
 //             }
-          
+
 //             :-moz-placeholder {
 //               color: 'white';
 //               opacity: 0;
 //               visibility: hidden;
 //             }
-          
+
 //             :-ms-input-placeholder {
 //               color: 'white';
 //               visibility: hidden;
@@ -769,4 +841,3 @@ export default Pengajuan;
 // };
 
 // export default Pengajuan;
-

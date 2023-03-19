@@ -23,8 +23,22 @@ export const EditPembayaran = () => {
   const [products, setProducts] = useState([]);
   const [validationError, setValidationError] = useState({});
   const navigate = useNavigate();
+  const [namaHari, setNamaHari] = useState("");
 //   const fileInput = useRef(null);
 //   const [gambar, setGambar] = useState()
+
+function handleChange(e) {
+  const date = new Date(e.target.value);
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const namaHariBaru = new Intl.DateTimeFormat("id-ID", options).format(date);
+  setTlg_Pembayaran(e.target.value);
+  setNamaHari(namaHariBaru);
+}
 
   const fetchProducts = async () => {
     await axios
@@ -33,7 +47,6 @@ export const EditPembayaran = () => {
         setProducts(data[0]);
         setNo_bkp(data[0].no_bkp);//
         setTlg_Pembayaran(data[0].tlg_pembayaran);
-        console.log(data);
         setNik_Alm(data[0].nik_alm);//
         setNama_Alm(data[0].nama_alm);//
         setNik_Waris(data[0].nik_waris);
@@ -66,7 +79,7 @@ export const EditPembayaran = () => {
       formData.append("nama_alm", nama_alm);
       formData.append("nik_waris", nik_waris);
       formData.append("nama_waris", nama_waris);
-      formData.append("tlg_pembayaran", tlg_pembayaran);
+      formData.append("tlg_pembayaran", namaHari);
       formData.append("bantuan", bantuan)
     //   formData.append("id", id);
     //   formData.append("gambar", gambar);
@@ -175,11 +188,10 @@ export const EditPembayaran = () => {
                 className="input"
                 type="date"
                 value={tlg_pembayaran}
-                onChange={(event) => {
-                  setTlg_Pembayaran(event.target.value);
-                }}
+                onChange={handleChange}
                 required
               />
+              <p>Hari : {namaHari}</p>
             </div>
             {/* <div className="form-group">
               <label htmlFor="nama">Bukti Pembayaran</label>

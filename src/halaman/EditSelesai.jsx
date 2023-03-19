@@ -29,7 +29,20 @@ const EditSelesai = () => {
   const [tlpn_waris, setTlpn_Waris] = useState("");
   const [filterPengajuan, setFilterPengajuan] = useState([]);
   const [filterAkte, setFilterAkte] = useState([]);
-  console.log(nik_alm_1)
+  const [namaHari, setNamaHari] = useState("");
+
+  function handleChange(e) {
+    const date = new Date(e.target.value);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const namaHariBaru = new Intl.DateTimeFormat("id-ID", options).format(date);
+    setTgl_Alm(e.target.value);
+    setNamaHari(namaHariBaru);
+  }
 
   const fetchProducts = async () => {
     await axios
@@ -37,7 +50,7 @@ const EditSelesai = () => {
       .then(({ data }) => {
         setProducts(data[0]);
         setNo_bkp(data[0].no_bkp);//
-        console.log(data[0]);
+        // console.log(data[0]);
         setNik_Alm(data[0].nik_alm);//
         setNama_Alm(data[0].nama_alm);//
         setNik_Waris(data[0].nik_waris);//
@@ -46,7 +59,7 @@ const EditSelesai = () => {
         setAlamat_Alm(data[0].alamat_alm);//
         setKelurahan_Alm(data[0].kelurahan_alm);//
         setKecamatan_Alm(data[0].kecamatan_alm);//
-        setTgl_Alm(data[0].tgl_alm);//
+        setNamaHari(data[0].tgl_alm);//
         setJam_Alm(data[0].jam_alm);//
         setTlpn_Waris(data[0].tlpn_waris);//
       });
@@ -79,7 +92,7 @@ const EditSelesai = () => {
       formData.append("alamat_alm", alamat_alm);
       formData.append("kelurahan_alm", kelurahan_alm);
       formData.append("kecamatan_alm", kecamatan_alm);
-      formData.append("tgl_alm", tgl_alm);
+      formData.append("tgl_alm", namaHari);
       formData.append("jam_alm", jam_alm);
       formData.append("tlpn_waris", tlpn_waris);
       formData.append("id", id);
@@ -238,11 +251,10 @@ const EditSelesai = () => {
                 className="input"
                 type="date"
                 value={tgl_alm}
-                onChange={(event) => {
-                  setTgl_Alm(event.target.value);
-                }}
-                required
+                onChange={handleChange}
+                // required
               />
+              <p>Hari : {namaHari}</p>
             </div>
             <div className="form-group">
               <label htmlFor="email">Jam Meninggal</label>

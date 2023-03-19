@@ -330,6 +330,20 @@ const EditPengajuan = () => {
   const [tlpn_waris, setTlpn_Waris] = useState("");
   const [filterPengajuan, setFilterPengajuan] = useState([]);
   const [filterAkte, setFilterAkte] = useState([]);
+  const [namaHari, setNamaHari] = useState("");
+
+  function handleChange(e) {
+    const date = new Date(e.target.value);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const namaHariBaru = new Intl.DateTimeFormat("id-ID", options).format(date);
+    setTgl_Alm(e.target.value);
+    setNamaHari(namaHariBaru);
+  }
 
   const fetchProducts = async () => {
     await axios.get(`https://subdomain.sudbalam.com/api/data/${id}`).then(({ data }) => {
@@ -344,7 +358,7 @@ const EditPengajuan = () => {
       setAlamat_Alm(data.alamat_alm);
       setKelurahan_Alm(data.kelurahan_alm);
       setKecamatan_Alm(data.kecamatan_alm);
-      setTgl_Alm(data.tgl_alm);
+      setNamaHari(data.tgl_alm);
       setJam_Alm(data.jam_alm);
       setTlpn_Waris(data.tlpn_waris);
     });
@@ -408,7 +422,7 @@ const EditPengajuan = () => {
       formData.append("alamat_alm", alamat_alm);
       formData.append("kelurahan_alm", kelurahan_alm);
       formData.append("kecamatan_alm", kecamatan_alm);
-      formData.append("tgl_alm", tgl_alm);
+      formData.append("tgl_alm", namaHari);
       formData.append("jam_alm", jam_alm);
       formData.append("tlpn_waris", tlpn_waris);
       formData.append("id", id);
@@ -561,11 +575,10 @@ const EditPengajuan = () => {
               className="input"
                 type="date"
                 value={tgl_alm}
-                onChange={(event) => {
-                  setTgl_Alm(event.target.value);
-                }}
+                onChange={handleChange}
                 required
               />
+              <p>Hari : {namaHari}</p>
             </div>
             <div className="form-group">
               <label htmlFor="email">Jam Meninggal</label>

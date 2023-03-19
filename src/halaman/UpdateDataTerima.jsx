@@ -13,19 +13,48 @@ const UpdateDataTerima = () => {
   const { nik_alm, id, nama_alm } = useParams();
   const [no_bkp, setNo_Bkp] = useState("");
   const [tlg_pembayaran, setTlg_Pembayaran] = useState("");
-  const [bantuan, setBantuan] = useState("");
+  const [bantuan, setBantuan] = useState(1000000);
   const fileInput = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [namaHari, setNamaHari] = useState("");
+
+  function handleChange(e) {
+    const date = new Date(e.target.value);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const namaHariBaru = new Intl.DateTimeFormat("id-ID", options).format(date);
+    setTlg_Pembayaran(e.target.value);
+    setNamaHari(namaHariBaru);
+  }
 
   const createProduct = async (e) => {
     const token = localStorage.getItem("token");
     e.preventDefault();
+    const isConfirm = await Swal.fire({
+      title: "Yakin data sudah benar?",
+      text: "Data pengajuan akan dikirimkan!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+    }).then((result) => {
+      return result.isConfirmed;
+    });
+
+    if (!isConfirm) {
+      return;
+    }
     setLoading(true);
 
     const formData = new FormData();
 
     formData.append("no_bkp", no_bkp);
-    formData.append("tlg_pembayaran", tlg_pembayaran);
+    formData.append("tlg_pembayaran", namaHari);
     formData.append("bantuan", bantuan);
     formData.append("gambar", fileInput.current.files[0]);
     formData.append("nik_alm", `${nik_alm}`);
@@ -62,7 +91,8 @@ const UpdateDataTerima = () => {
       <NavbarTeam />
       <main className="body">
         <h5 className="judul-pengajuan">
-          TERIMA PENGAJUAN SANTUNAN UANG DUKA DARI {nama_alm} DENGAN NIK {nik_alm} 
+          TERIMA PENGAJUAN SANTUNAN UANG DUKA DARI {nama_alm} DENGAN NIK{" "}
+          {nik_alm}
         </h5>
         <form className="form-pengajuan" onSubmit={createProduct}>
           <div className="form_pertama">
@@ -85,11 +115,10 @@ const UpdateDataTerima = () => {
                 className="input"
                 type="date"
                 value={tlg_pembayaran}
-                onChange={(event) => {
-                  setTlg_Pembayaran(event.target.value);
-                }}
+                onChange={handleChange}
                 required
               />
+              <p>Hari : {namaHari}</p>
             </div>
             <div className="form-group">
               <label htmlFor="nama">Bukti Pembayaran</label>

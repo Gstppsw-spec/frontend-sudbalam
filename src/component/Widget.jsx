@@ -18,10 +18,19 @@ const Widget = ({ type }) => {
   }, []);
 
   const fetchProducts = async () => {
-    await axios.get(`https://subdomain.sudbalam.com/api/dataterima`).then(({ data }) => {
-      setProducts(data);
-      setIsLoaded(true);
-    });
+    await axios
+      .get(`https://subdomain.sudbalam.com/api/dataterima`)
+      .then(({ data }) => {
+        setProducts(data);
+        setIsLoaded(true);
+        // console.log(new Date(data[500].tlg_pembayaran).getFullYear())
+        // console.log(data[500].tlg_pembayaran)
+        const tahun = 2023;
+        const subsetArray = data.filter(
+          (element) => new Date(element.tlg_pembayaran).getFullYear() !== tahun
+        );
+        console.log(subsetArray);
+      });
   };
 
   const tahun = new Date().getFullYear();
@@ -33,34 +42,38 @@ const Widget = ({ type }) => {
       products.filter(
         (product) => new Date(product.tlg_pembayaran).getFullYear() === tahun
       )
-    )
-  }, [products])
+    );
+  }, [products]);
 
   useEffect(() => {
     setFilteredBulan(
       products.filter(
-        (product) => new Date(product.tlg_pembayaran).getMonth() === month && new Date(product.tlg_pembayaran).getFullYear() === tahun
+        (product) =>
+          new Date(product.tlg_pembayaran).getMonth() === month &&
+          new Date(product.tlg_pembayaran).getFullYear() === tahun
       )
-    )
-  }, [products])
+    );
+  }, [products]);
 
   useEffect(() => {
     setFilteredTanggal(
       products.filter(
-        (product) => new Date(product.tlg_pembayaran).getDate() === tanggal && new Date(product.tlg_pembayaran).getMonth() === month && new Date(product.tlg_pembayaran).getFullYear() === tahun
+        (product) =>
+          new Date(product.tlg_pembayaran).getDate() === tanggal &&
+          new Date(product.tlg_pembayaran).getMonth() === month &&
+          new Date(product.tlg_pembayaran).getFullYear() === tahun
       )
-    )
-  }, [products])
+    );
+  }, [products]);
 
   let data;
 
   switch (type) {
-    
     case "jumlah_kematian":
       data = {
         title: "JUMLAH PENCAIRAN DANA SEPANJANG WAKTU",
         isMoney: false,
-        amount: (products.length),
+        amount: products.length,
         isJumlah: true,
         icon: (
           <PersonOutlinedIcon
@@ -77,7 +90,7 @@ const Widget = ({ type }) => {
       data = {
         title: "ANGGARAN DANA SANTUNAN KEMATIAN KELUAR SEPANJANG WAKTU",
         isMoney: true,
-        amount: (products.length * (1000000)),
+        amount: products.length * 1000000,
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -86,47 +99,53 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-      case "kematian_tahun":
+    case "kematian_tahun":
       data = {
         title: "JUMLAH DISALURKAN TAHUN INI",
         isMoney: false,
         isJumlah: true,
-        amount: (filteredTahun.length),
+        amount: filteredTahun.length,
         icon: (
           <PersonOutlinedIcon
             className="icon"
-            style={{ color: "crimson",
-            backgroundColor: "rgba(255, 0, 0, 0.2)", }}
+            style={{
+              color: "crimson",
+              backgroundColor: "rgba(255, 0, 0, 0.2)",
+            }}
           />
         ),
       };
       break;
-      case "kematian_bulan":
+    case "kematian_bulan":
       data = {
         title: "JUMLAH DISALURKAN BULAN INI",
         isMoney: false,
         isJumlah: true,
-        amount: (filteredBulan.length),
+        amount: filteredBulan.length,
         icon: (
           <PersonOutlinedIcon
             className="icon"
-            style={{ color: "crimson",
-            backgroundColor: "rgba(255, 0, 0, 0.2)", }}
+            style={{
+              color: "crimson",
+              backgroundColor: "rgba(255, 0, 0, 0.2)",
+            }}
           />
         ),
       };
       break;
-      case "kematian_Hari":
+    case "kematian_Hari":
       data = {
         title: "JUMLAH DISALURKAN HARI INI",
         isMoney: false,
         isJumlah: true,
-        amount: (filteredTanggal.length),
+        amount: filteredTanggal.length,
         icon: (
           <PersonOutlinedIcon
             className="icon"
-            style={{ color: "crimson",
-            backgroundColor: "rgba(255, 0, 0, 0.2)", }}
+            style={{
+              color: "crimson",
+              backgroundColor: "rgba(255, 0, 0, 0.2)",
+            }}
           />
         ),
       };
@@ -135,26 +154,26 @@ const Widget = ({ type }) => {
       break;
   }
 
-  if (!isLoaded){
+  if (!isLoaded) {
     return <div className="loading-widget"></div>;
   } else {
-  return (
-    <div className="widget">
-      <div className="left">
-        <span className="title">{data.title}</span>
-        <span className="counter">
-          {data.isMoney && "Rp. "} {data.amount}
-          {data.isJumlah && " Data"}
-        </span>
-        <span className="link"></span>
+    return (
+      <div className="widget">
+        <div className="left">
+          <span className="title">{data.title}</span>
+          <span className="counter">
+            {data.isMoney && "Rp. "} {data.amount}
+            {data.isJumlah && " Data"}
+          </span>
+          <span className="link"></span>
+        </div>
+        <div className="right">
+          <div className="percentage positive"></div>
+          {data.icon}
+        </div>
       </div>
-      <div className="right">
-        <div className="percentage positive"></div>
-        {data.icon}
-      </div>
-    </div>
-  );
+    );
+  }
 };
-}
 
 export default Widget;

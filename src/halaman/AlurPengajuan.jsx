@@ -102,7 +102,7 @@ const AlurPengajuan = (props) => {
             <br></br>
             <span>
               5. PERMOHONAN AKAN DISERAHKAN KE KELURAHAN DAN DARI KELURAHAN AKAN
-              DISERAHKAN KE KANTOR BPKAD BAGIAN ANGGARAN UNTUK DIPROSES
+              DISERAHKAN KE TIM DUKA PEMERINTAH KOTA BANDAR LAMPUNG
             </span>
             <br></br>
             <br></br>

@@ -96,6 +96,7 @@ const EditSelesai = () => {
       formData.append("jam_alm", jam_alm);
       formData.append("tlpn_waris", tlpn_waris);
       formData.append("id", id);
+      formData.append("nik_alm_1", nik_alm_1);
     }
     const token = localStorage.getItem("token");
     await axios

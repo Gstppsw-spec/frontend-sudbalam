@@ -576,7 +576,7 @@ const EditPengajuan = () => {
                 type="date"
                 value={tgl_alm}
                 onChange={handleChange}
-                required
+                // required
               />
               <p>Hari : {namaHari}</p>
             </div>

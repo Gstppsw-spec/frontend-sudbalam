@@ -11,7 +11,6 @@ import { useRef } from "react";
 
 export const EditPembayaran = () => {
   const { id, nik_alm_1 } = useParams();
-  console.log(id)
   console.log(nik_alm_1)
   const [no_bkp, setNo_bkp] = useState("");
   const [nik_alm, setNik_Alm] = useState("");
@@ -46,7 +45,7 @@ function handleChange(e) {
       .then(({ data }) => {
         setProducts(data[0]);
         setNo_bkp(data[0].no_bkp);//
-        setTlg_Pembayaran(data[0].tlg_pembayaran);
+        setNamaHari(data[0].tlg_pembayaran);
         setNik_Alm(data[0].nik_alm);//
         setNama_Alm(data[0].nama_alm);//
         setNik_Waris(data[0].nik_waris);
@@ -80,9 +79,8 @@ function handleChange(e) {
       formData.append("nik_waris", nik_waris);
       formData.append("nama_waris", nama_waris);
       formData.append("tlg_pembayaran", namaHari);
-      formData.append("bantuan", bantuan)
-    //   formData.append("id", id);
-    //   formData.append("gambar", gambar);
+      formData.append("bantuan", bantuan);
+      formData.append("nik_alm_1", nik_alm_1);
     }
     const token = localStorage.getItem("token");
     await axios
@@ -189,7 +187,7 @@ function handleChange(e) {
                 type="date"
                 value={tlg_pembayaran}
                 onChange={handleChange}
-                required
+                // required
               />
               <p>Hari : {namaHari}</p>
             </div>

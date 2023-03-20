@@ -330,7 +330,7 @@ const DaftarTolak = (props) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     fetch("https://subdomain.sudbalam.com/api/datatolak", {
-      // fetch("http://localhost:8000/api/datatolak", {
+      // fetch("https://subdomain.sudbalam.com/api/datatolak", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

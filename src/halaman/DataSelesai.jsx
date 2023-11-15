@@ -8,7 +8,6 @@ const DataSelesai = () => {
     <div className="app-container">
       <Topbar />
       <Navbar />
-
       <DaftarSelesai />
     
 <br /><br />

@@ -5,6 +5,7 @@ import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlin
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
+import moment from "moment/moment";
 
 const Widget = ({ type }) => {
   const [products, setProducts] = useState([]);
@@ -23,13 +24,6 @@ const Widget = ({ type }) => {
       .then(({ data }) => {
         setProducts(data);
         setIsLoaded(true);
-        // console.log(new Date(data[500].tlg_pembayaran).getFullYear())
-        // console.log(data[500].tlg_pembayaran)
-        const tahun = 2023;
-        const subsetArray = data.filter(
-          (element) => new Date(element.tlg_pembayaran).getFullYear() !== tahun
-        );
-        console.log(subsetArray);
       });
   };
 

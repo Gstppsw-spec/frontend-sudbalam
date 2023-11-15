@@ -9,9 +9,7 @@ const DataMasuk = () => {
     <div className="app-container">
       <Topbar />
       <NavbarTeam />
-
       <DaftarMasuk />
-
       <footer className="footer">
         Sistem Penyaluran Dana Santunan Kematian &copy; 2022
       </footer>

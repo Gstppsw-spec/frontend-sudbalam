@@ -62,8 +62,7 @@ function DaftarProses() {
           )
       )
     );
-  }, [items, filterStatus, searchTerm]);
-
+    }, [items, filterStatus, searchTerm]);
   let dataLimit = 100;
   let pageLimit = 5;
 

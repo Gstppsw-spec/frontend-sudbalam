@@ -23,8 +23,6 @@ export const EditPembayaran = () => {
   const [validationError, setValidationError] = useState({});
   const navigate = useNavigate();
   const [namaHari, setNamaHari] = useState("");
-//   const fileInput = useRef(null);
-//   const [gambar, setGambar] = useState()
 
 function handleChange(e) {
   const date = new Date(e.target.value);
@@ -191,11 +189,6 @@ function handleChange(e) {
               />
               <p>Hari : {namaHari}</p>
             </div>
-            {/* <div className="form-group">
-              <label htmlFor="nama">Bukti Pembayaran</label>
-              <img src={`https://subdomain.sudbalam.com/gambar/${gambar}` } width="50px"/>
-              <input className="input" type="file" ref={fileInput} />
-            </div> */}
             <div className="form-group">
               <label htmlFor="nama">Besar Bantuan</label>
               <input

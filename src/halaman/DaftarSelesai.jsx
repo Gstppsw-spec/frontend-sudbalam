@@ -1,278 +1,7 @@
-// import React, { useEffect } from "react";
-// import { useState } from "react";
-// import "../style/listData.css";
-// import FileSaver from "file-saver";
-// import XLSX from "xlsx/dist/xlsx.full.min";
-// import { useNavigate } from "react-router";
-
-// function DaftarSelesai() {
-//   const [isLoaded, setIsLoaded] = useState(false);
-//   const [items, setItems] = useState([]);
-//   const [error, setError] = useState(null);
-//   const [data, setData] = useState([]);
-//   const [filteredData, setFilteredData] = useState([]);
-//   const [searchTerm, setSearchTerm] = useState("");
-
-//   const [isAuthenticated, setIsAuthenticated] = useState(false);
-//   const navigate = useNavigate();
-//   useEffect(() => {
-//     const token = localStorage.getItem('token');
-//     const role = localStorage.getItem('role');
-//     if (!token && role !== 'admin') {
-//       navigate('/login');
-//       return;
-//     }
-
-//     setIsAuthenticated(true);
-//   }, []);
-
-//   //import data ke excel
-//   useEffect(() => {
-//     const token = localStorage.getItem('token');
-//     fetch("https://subdomain.sudbalam.com/api/dataterima",{
-//       headers: {
-//         'Authorization': `Bearer ${token}`
-//       }
-//     })
-//       .then((response) => response.json())
-//       .then((json) => setData(json));
-//   }, []);
-
-//   const handleExport = () => {
-//     const dataArray = data.map((d) => [d.no_bkp, d.nama_alm, d.nik_alm, d.no_akte, d.alamat_alm, d.kelurahan_alm, d.kecamatan_alm, d.tgl_alm, d.jam_alm, d.tlg_pembayaran,d.nama_waris,d.tlpn_waris, d.bantuan]);
-
-//     const dataWithHeader = [['No Bkp','Nama Almarhum', 'NIK Almarhum', 'Nomor Akte Kematian', 'Alamat', 'Kelurahan', 'Kecamatan', 'Tanggal Kematian', 'Jam Kematian', 'Tanggal Pembayaran', 'Nama Penerima (ahli waris)', 'Nomor Telepon', 'Besar Bantuan']].concat(dataArray);
-//     const wb = XLSX.utils.book_new();
-//     const ws = XLSX.utils.aoa_to_sheet(dataWithHeader);
-//     XLSX.utils.book_append_sheet(wb, ws, 'Data');
-
-//     const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-//     FileSaver.saveAs(new Blob([wbout]), 'data.xlsx');
-
-//   };
-
-//   // //fetch data
-//   useEffect(() => {
-//     const token = localStorage.getItem('token');
-//     fetch("https://subdomain.sudbalam.com/api/dataterima",{
-//       headers: {
-//         'Authorization': `Bearer ${token}`
-//       }
-//     })
-//       .then((res) => res.json())
-//       .then(
-//         (result) => {
-//           setItems(result);
-//           setIsLoaded(true);
-//         },
-//         (error) => {
-//           setIsLoaded(true);
-//           setError(error);
-//         }
-//       );
-//   }, []);
-
-//   useEffect(() => {
-//     setFilteredData(
-//       items.filter(
-//         (item) =>
-//           (item.kelurahan_alm.toLowerCase().includes(searchTerm.toLowerCase()) || item.kecamatan_alm.toLowerCase().includes(searchTerm.toLowerCase())
-//           || item.nama_alm.toLowerCase().includes(searchTerm.toLowerCase())
-//           || item.nik_alm.toLowerCase().includes(searchTerm.toLowerCase())
-//           || item.alamat_alm.toLowerCase().includes(searchTerm.toLowerCase())
-//           || item.nama_waris.toLowerCase().includes(searchTerm.toLowerCase())
-//           || item.nik_waris.toLowerCase().includes(searchTerm.toLowerCase())
-//           || item.no_bkp.toLowerCase().includes(searchTerm.toLowerCase())
-//           || item.no_akte.toLowerCase().includes(searchTerm.toLowerCase())
-//           )
-//       )
-//     );
-//   }, [items, searchTerm]);
-
-//   let dataLimit = 100;
-//   let pageLimit = 5;
-
-//   const [pages, setPages] = useState(Math.ceil(filteredData.length / dataLimit));
-//   const [currentPage, setCurrentPage] = useState(1);
-
-//   function goToNextPage() {
-//     if (currentPage < pages) {
-//       setCurrentPage((page) => page + 1);
-//     }
-//   }
-
-//   function goToPreviosPage() {
-//     setCurrentPage((page) => page - 1);
-//   }
-
-//   function changePage(event) {
-//     const pageNumber = Number(event.target.textContent);
-//     setCurrentPage(pageNumber);
-//   }
-
-//   const getPaginatedData = () => {
-//     const startIndex = currentPage * dataLimit - dataLimit;
-//     const endIndex = startIndex + dataLimit;
-//     return filteredData.slice(startIndex, endIndex);
-//   };
-
-//   const getPaginationGroup = () => {
-//     if (pages > 0) {
-//       let start = Math.floor((currentPage - 1) / pageLimit) * pageLimit;
-//       let end = Math.min(start + pageLimit, pages);
-//       return new Array(end - start).fill().map((_, idx) => start + idx + 1);
-//     } else {
-//       return [];
-//     }
-//   };
-
-//   useEffect(() => {
-//     setPages(Math.ceil(filteredData.length / dataLimit));
-//   }, [filteredData, dataLimit]);
-
-//   useEffect(() => {
-//     window.scrollTo({ behavior: "smooth", top: "0px" });
-//   }, [currentPage]);
-
-//   if (error) {
-//     return <div>ErrorL {error.message}</div>;
-//   } else if (!isLoaded) {
-//     return <div className="loading"></div>;
-//   } else {
-//     return (
-//       <main className="body">
-//         <div className="datatableTitle">
-//           Data Pengambilan Dana Santunan Kematian Selesai Diproses
-//         </div>
-//         <div className="cari" style={{ }}>
-//           <input
-//             type="search"
-//             className="input"
-//             name="search-form"
-//             id="search-form"
-//             placeholder="search"
-//             value={searchTerm}
-//           onChange={(e) => setSearchTerm(e.target.value)}
-//           />
-//         </div>
-//         <div className="excel">
-//           <button onClick={handleExport} className="export-excel">export to excel</button>
-//         </div>
-
-//         <div>
-//           <div>
-//             <div>
-//               <table className="list-data">
-//                 <thead>
-//                   <tr className="hidden">
-//                   <th className="listnih">No</th>
-//                   <th className="listnih">No BKP</th>
-//                     <th className="listnih">NIK Almarhum</th>
-//                     <th className="listnih">Nama Almarhum</th>
-//                     <th className="listnih">NIK Penerima (Ahli Waris)</th>
-//                     <th className="listnih">Nama Penerima (Ahli Waris)</th>
-//                     <th className="listnih">No Akte Kematian</th>
-//                     <th className="listnih">Alamat</th>
-//                     <th className="listnih">Kelurahan</th>
-//                     <th className="listnih">Kecamatan</th>
-//                     <th className="listnih">Hari/Tanggal Meninggal</th>
-//                     <th className="listnih">Jam Meninggal</th>
-//                     <th className="listnih">Nomor Telepon</th>
-//                   </tr>
-//                 </thead>
-//                 <tbody>
-//                 {filteredData.length > 0 &&
-//                     getPaginatedData(filteredData).map((row, key) => (
-//                       <tr key={key}>
-//                         <td className="listnoh" data-label="NIK Almarhum">
-//                           {key+1}
-//                         </td>
-//                         <td className="listnoh" data-label="NIK Almarhum">
-//                           {row.no_bkp}
-//                         </td>
-//                         <td className="listnoh" data-label="NIK Almarhum">
-//                           {row.nik_alm}
-//                         </td>
-//                         <td className="listnoh" data-label="Nama Almarhum">
-//                           {row.nama_alm}
-//                         </td>
-//                         <td
-//                           className="listnoh"
-//                           data-label="NIK Penerima (Ahli Waris)"
-//                         >
-//                           {row.nik_waris}
-//                         </td>
-//                         <td
-//                           className="listnoh"
-//                           data-label="Nama Penerima (Ahli Waris)"
-//                         >
-//                           {row.nama_waris}
-//                         </td>
-//                         <td
-//                           className="listnoh"
-//                           data-label="Nomor Akte Kematian"
-//                         >
-//                           {row.no_akte}
-//                         </td>
-//                         <td className="listnoh" data-label="Alamat">
-//                           {row.alamat_alm}
-//                         </td>
-//                         <td className="listnoh" data-label="Kelurahan">
-//                           {row.kelurahan_alm}
-//                         </td>
-
-//                         <td className="listnoh" data-label="Kecamatan">
-//                           {row.kecamatan_alm}
-//                         </td>
-
-//                         <td
-//                           className="listnoh"
-//                           data-label="Hari/Tanggal Meninggal"
-//                         >
-//                           {row.tgl_alm}
-//                         </td>
-
-//                         <td className="listnoh" data-label="Jam Meninggal">
-//                           {row.jam_alm}
-//                         </td>
-
-//                         <td className="listnoh" data-label="Nomor Telepon">
-//                           {row.tlpn_waris}
-//                         </td>
-//                       </tr>
-//                     ))}
-//                 </tbody>
-//               </table>
-//             </div>
-//             <div className="pagi">
-//             {currentPage > 1 && <a onClick={goToPreviosPage}>Prev</a>}
-//               {getPaginationGroup().map((item, index) => (
-//                 <a
-//                   key={index}
-//                   onClick={changePage}
-//                   className={`paginationItem ${
-//                     currentPage === item ? "active" : null
-//                   }`}
-//                 >
-//                   <span>{item}</span>
-//                 </a>
-//               ))}
-//               {currentPage < pages && <a onClick={goToNextPage}>Next</a>}
-//             </div>
-//           </div>
-//           <br />
-//         </div>
-//       </main>
-//     );
-//   }
-// }
-
-// export default DaftarSelesai;
-
 import FileSaver from "file-saver";
 import { Link } from "react-router-dom";
 import XLSX from "xlsx/dist/xlsx.full.min";
-import { useNavigate } from "react-router";
+import { json, useNavigate } from "react-router";
 import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { useState, useEffect } from "react";
@@ -334,6 +63,7 @@ function DaftarSelesai() {
       d.jam_alm,
       d.tlg_pembayaran,
       d.nama_waris,
+      d.nik_waris,
       d.tlpn_waris,
       d.bantuan,
     ]);
@@ -351,6 +81,7 @@ function DaftarSelesai() {
         "Jam Kematian",
         "Tanggal Pembayaran",
         "Nama Penerima (ahli waris)",
+        "NIK Penerima (ahli waris)",
         "Nomor Telepon",
         "Besar Bantuan",
       ],
@@ -367,8 +98,8 @@ function DaftarSelesai() {
     const token = localStorage.getItem("token");
     fetch("https://subdomain.sudbalam.com/api/dataterima", {
       headers: {
-        Authorization: `Bearer ${token}`,
-      },
+        'Authorization': `Bearer ${token}`
+      }
     })
       .then((res) => res.json())
       .then(

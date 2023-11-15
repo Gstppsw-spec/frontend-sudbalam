@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import KontakInformasi from "../halaman/KontakInformasi";
+import HeaderComponent from "../halaman/HeaderComponent";
 
 const ResultCard = (props) => {
   const [keyword, setKeyWord] = useState("");
@@ -31,46 +32,7 @@ const ResultCard = (props) => {
   };
   return (
     <div className="app-container">
-      <header className="header">
-        <div className="pertama container">
-          <table width="100%">
-            <tbody>
-              <tr>
-                <td align="left">
-                  <div className="sistem">
-                  SISTEM PENYALURAN SANTUNAN UANG DUKA
-                  </div>
-                </td>
-                <td align="right">
-                  <img src={profile} style={{ height: "50px" }}></img>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </header>
-
-      <div className="navigasi_bar">
-        <nav>
-          <ul>
-            <li>
-              <Link to="/" className="linkkuh">
-                BERANDA
-              </Link>
-            </li>
-            <li>
-              <Link to="/alur-pengajuan" className="linkkuh">
-                ALUR PENGAJUAN
-              </Link>
-            </li>
-            <li>
-              <Link to="/login" className="linkkuh">
-                LOGIN
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <HeaderComponent />
 
       <main className="body">
         <div className="body-part-satu">
@@ -83,16 +45,15 @@ const ResultCard = (props) => {
           <br />
 
           <div className="body-pencarian">
-            
             <div className="form">
-            <h5 style={{ color: "gray" }} className="pendaftaran-judul">
+              <h5 style={{ color: "gray" }} className="pendaftaran-judul">
                 CEK STATUS PENCAIRAN SANTUNAN UANG DUKA
               </h5>
               <hr />
               <form id="perloginan">
                 <label>NOMOR INDUK KEPENDUDUKAN ALMARHUM</label>
                 <input
-                className="input"
+                  className="input"
                   placeholder="NOMOR INDUK KEPENDUDUKAN"
                   type="text"
                   value={keyword}
@@ -109,7 +70,7 @@ const ResultCard = (props) => {
                 <label>NOMOR INDUK KEPENDUDUKAN AHLI WARIS</label>
 
                 <input
-                className="input"
+                  className="input"
                   placeholder="NOMOR INDUK KEPENDUDUKAN AHLI WARIS"
                   type="text"
                   value={pencarian}

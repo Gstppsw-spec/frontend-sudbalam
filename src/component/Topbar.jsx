@@ -15,7 +15,7 @@ const Topbar = () => {
     await axios.get("https://subdomain.sudbalam.com/api/user").then((response) => {
       setUser(response.data);
     });
-  };
+  }; 
 
   useEffect(() => {
     if (!token) {

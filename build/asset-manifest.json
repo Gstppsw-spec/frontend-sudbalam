@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.65fcad73.css",
+    "main.js": "/static/js/main.76da0986.js",
+    "static/media/balam.png": "/static/media/balam.c06a6a34cc1e0986ac5a.png",
+    "static/media/pemkot.jpg": "/static/media/pemkot.0d8b77934bb0c24501bf.jpg",
+    "static/media/remove.png": "/static/media/remove.3c662b752278fc52f408.png",
+    "index.html": "/index.html",
+    "main.65fcad73.css.map": "/static/css/main.65fcad73.css.map",
+    "main.76da0986.js.map": "/static/js/main.76da0986.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.65fcad73.css",
+    "static/js/main.76da0986.js"
+  ]
+}

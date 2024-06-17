@@ -9,7 +9,6 @@ import { useRef } from "react";
 
 const UpdateDataTerima = () => {
   const navigate = useNavigate();
-  const [validationError, setValidationError] = useState({});
   const { nik_alm, id, nama_alm } = useParams();
   const [no_bkp, setNo_Bkp] = useState("");
   const [tlg_pembayaran, setTlg_Pembayaran] = useState("");
@@ -75,7 +74,7 @@ const UpdateDataTerima = () => {
       })
       .catch(({ response }) => {
         if (response.status === 422) {
-          setValidationError(response.data.errors);
+          console.log(response);
         } else {
           Swal.fire({
             text: response.data.message,

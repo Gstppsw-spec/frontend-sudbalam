@@ -1,16 +1,11 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import "../style/dashboard.css";
 import "../style/beranda.css";
 import "../style/home.css";
 
 function NavbarTeam() {
-  const navigate = useNavigate();
-  const [showNav, setShowNav] = useState(false);
-  const handleClick = () => {
-    setShowNav(!showNav);
-  };
+
   return (
     <div className="navigasi_bar n-team">
         <nav className="navbar">
@@ -33,7 +28,6 @@ function NavbarTeam() {
             </li>
           </ul>
         </nav>
-      {/* )} */}
     </div>
   );
 }

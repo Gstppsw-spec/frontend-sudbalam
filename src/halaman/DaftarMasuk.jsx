@@ -10,10 +10,8 @@ function DaftarMasuk() {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
-  const [filterStatus, setFilterStatus] = useState("ditolak");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
@@ -21,8 +19,7 @@ function DaftarMasuk() {
       navigate('/login');
       return;
     }
-    setIsAuthenticated(true);
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -60,7 +57,7 @@ function DaftarMasuk() {
           )
       )
     );
-  }, [items, filterStatus, searchTerm]);
+  }, [items, searchTerm]);
 
   let dataLimit = 100;
   let pageLimit = 5;

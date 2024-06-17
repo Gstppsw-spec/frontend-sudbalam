@@ -1,7 +1,5 @@
 import React from "react";
-import profile from ".././img/balam.png";
 import ".././style/beranda.css";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -33,7 +31,6 @@ const ResultCard = (props) => {
   return (
     <div className="app-container">
       <HeaderComponent />
-
       <main className="body">
         <div className="body-part-satu">
           <div className="body-pembuka">

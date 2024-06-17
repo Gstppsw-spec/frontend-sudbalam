@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "../component/Navbar";
 import NavbarTeam from "../component/NavbarTeam";
 import Topbar from "../component/Topbar";
 import DaftarMasuk from "./DaftarMasuk";

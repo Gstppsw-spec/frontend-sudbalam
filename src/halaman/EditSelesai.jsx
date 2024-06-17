@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "../style/pengajuan.css";
-import profile from ".././img/balam.png";
-import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -10,11 +8,7 @@ import Navbar from "../component/Navbar";
 
 const EditSelesai = () => {
   const navigate = useNavigate();
-  const [validationError, setValidationError] = useState({});
-  const [products, setProducts] = useState([]);
   const { id, nik_alm_1} = useParams();
-  const [items, setItems] = useState([]);
-
   const [no_bkp, setNo_bkp] = useState("");
   const [nik_alm, setNik_Alm] = useState("");
   const [nama_alm, setNama_Alm] = useState("");
@@ -27,8 +21,6 @@ const EditSelesai = () => {
   const [tgl_alm, setTgl_Alm] = useState("");
   const [jam_alm, setJam_Alm] = useState("");
   const [tlpn_waris, setTlpn_Waris] = useState("");
-  const [filterPengajuan, setFilterPengajuan] = useState([]);
-  const [filterAkte, setFilterAkte] = useState([]);
   const [namaHari, setNamaHari] = useState("");
 
   function handleChange(e) {
@@ -48,9 +40,7 @@ const EditSelesai = () => {
     await axios
       .get(`https://subdomain.sudbalam.com/api/dataterima/${nik_alm_1}`)
       .then(({ data }) => {
-        setProducts(data[0]);
         setNo_bkp(data[0].no_bkp);//
-        // console.log(data[0]);
         setNik_Alm(data[0].nik_alm);//
         setNama_Alm(data[0].nama_alm);//
         setNik_Waris(data[0].nik_waris);//
@@ -114,7 +104,7 @@ const EditSelesai = () => {
       })
       .catch(({ response }) => {
         if (response.status === 422) {
-          setValidationError(response.data.errors);
+          console.log(response);
         } else {
           Swal.fire({
             text: response.data.message,

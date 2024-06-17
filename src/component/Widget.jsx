@@ -6,7 +6,7 @@ import { useDashboardQuery } from "../api/dashboard/useDashboardQuery";
 
 const Widget = ({ type }) => {
 
-  const { data: dataDashboard, isLoading, isError } = useDashboardQuery();
+  const { data: dataDashboard, isLoading } = useDashboardQuery();
   
   let data;
 

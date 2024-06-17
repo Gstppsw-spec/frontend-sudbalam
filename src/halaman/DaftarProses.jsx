@@ -6,15 +6,12 @@ import { useNavigate } from "react-router";
 import "../style/listData.css";
 
 function DaftarProses() {
-  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
-  const [filterStatus, setFilterStatus] = useState("sedang diproses");
   const [searchTerm, setSearchTerm] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -23,8 +20,7 @@ function DaftarProses() {
       navigate('/login');
       return;
     }
-    setIsAuthenticated(true);
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -62,7 +58,7 @@ function DaftarProses() {
           )
       )
     );
-    }, [items, filterStatus, searchTerm]);
+    }, [items, searchTerm]);
   let dataLimit = 100;
   let pageLimit = 5;
 

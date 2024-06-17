@@ -27,7 +27,7 @@ const HasilPengajuan = (props) => {
           setFilterPengajuan(trip);
         });
       }); 
-  }, [words]);
+  }, [words, pencarians]);
 
   if (Array.isArray(filterPengajuan) && filterPengajuan.length) {
     return (

@@ -2,25 +2,17 @@ import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { useState, useEffect } from "react";
 import FileSaver from "file-saver";
-import { Container, Button, Row, Col, Spinner } from "reactstrap";
-// import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import { Row, Col} from "reactstrap";
 import paginationFactory from "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator";
 import ToolkitProvider, {
   Search,
   CSVExport,
 } from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit";
-// import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import XLSX from "xlsx/dist/xlsx.full.min";
-// const { SearchBar } = Search;
 
 const DaftarTolak = (props) => {
   const { SearchBar } = Search;
-  const { ExportCSVButton } = CSVExport;
-  const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
-  const [error, setError] = useState(null);
-  const [data, setData] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -33,12 +25,10 @@ const DaftarTolak = (props) => {
       .then(
         (result) => {
           setItems(result);
-          setIsLoaded(true);
           console.log(result)
         },
         (error) => {
-          setIsLoaded(true);
-          setError(error);
+          console.log(error);
         }
       );
   }, []);
@@ -110,11 +100,6 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "2%", textAlign: "center", backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center', };
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
     },
     {
       dataField: "nik_alm",
@@ -135,11 +120,6 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "5%", textAlign: "center" , backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center',};
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
     },
     {
       dataField: "nama_alm",
@@ -160,11 +140,6 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "5%" , backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center',};
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
     },
     {
       dataField: "nik_waris",
@@ -184,11 +159,6 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "5%" , backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center',};
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
     },
     {
       dataField: "nama_waris",
@@ -209,11 +179,6 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "5%" , backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center',};
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
     },
     {
       dataField: "no_akte",
@@ -233,11 +198,6 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "5%" , backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center',};
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
     },
     {
       dataField: "alamat_alm",
@@ -257,11 +217,6 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "5%" , backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center',};
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
     },
     {
       dataField: "kelurahan_alm",
@@ -281,11 +236,6 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "5%" , backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center',};
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
     },
     {
       dataField: "kecamatan_alm",
@@ -305,11 +255,6 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "5%" , backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center',};
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
     },
     {
       dataField: "tgl_alm",
@@ -329,11 +274,6 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "5%" , backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center',};
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
     },
     {
       dataField: "jam_alm",
@@ -353,11 +293,6 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "5%" , backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center',};
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
     },
     {
       dataField: "tlpn_waris",
@@ -377,11 +312,6 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "5%", backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center', };
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
     },
     {
       dataField: "keterrangan",
@@ -401,28 +331,16 @@ const DaftarTolak = (props) => {
       paddingBottom: '1rem',
       cursor: 'pointer'
     },
-      // headerStyle: () => {
-      //   return { fontSize: "10px", width: "5%" , backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center', };
-      // },
-      // headerAlign: 'center',
-      // headerClasses: 'custom-header-style',
-      // headerStyle: () => {
-      //   return { width: "5%" };
-      // },
     },
   ];
   const options = {
     paginationSize: 3,
     pageStartIndex: 1,
-    // showTotal: true,
-    // paginationTotalRenderer: customTotal,
-    // disablePageTitle: true,
     sizePerPageList : [
       { text: "10", value: 10, className: "my-custom-page-size" },
       { text: "25", value: 25, className: "my-custom-page-size" },
       { text: "50", value: 50, className: "my-custom-page-size" },
       { text: "100", value: 100, className: "my-custom-page-size" },
-      // { text: "200", value: 200, className: "my-custom-page-size" },
     ]
   }
   return (
@@ -430,9 +348,6 @@ const DaftarTolak = (props) => {
       <div className="datatableTitle">
         Data Pengambilan Dana Santunan Kematian Ditolak
       </div>
-      {/* <div className="container"> */}
-      {/* <div className="table-responsive"> */}
-        {/* <Container> */}
           <ToolkitProvider
             keyField="id"
             data={numberedData}
@@ -453,10 +368,6 @@ const DaftarTolak = (props) => {
                     </div>
                   </Col>
                 </Row>
-
-                {/* <ExportCSVButton {...props.csvProps}>
-                Export CSV!!
-              </ExportCSVButton> */}
                 <BootstrapTable
                   {...props.baseProps}
                   pagination={paginationFactory(options)}
@@ -470,9 +381,6 @@ const DaftarTolak = (props) => {
             export to excel
           </button>
         </div>
-        {/* </Container> */}
-      {/* </div> */}
-      {/* </div> */}
     </main>
   );
 };

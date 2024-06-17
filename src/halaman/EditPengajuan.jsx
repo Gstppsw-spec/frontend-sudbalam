@@ -8,11 +8,8 @@ import NavbarTeam from "../component/NavbarTeam";
 
 const EditPengajuan = () => {
   const navigate = useNavigate();
-  const [validationError, setValidationError] = useState({});
-  const [products, setProducts] = useState([]);
   const {id} = useParams();
 
-  
   const [nik_alm, setNik_Alm] = useState("");
   const [nama_alm, setNama_Alm] = useState("");
   const [nik_waris, setNik_Waris] = useState("");
@@ -24,8 +21,6 @@ const EditPengajuan = () => {
   const [tgl_alm, setTgl_Alm] = useState("");
   const [jam_alm, setJam_Alm] = useState("");
   const [tlpn_waris, setTlpn_Waris] = useState("");
-  const [filterPengajuan, setFilterPengajuan] = useState([]);
-  const [filterAkte, setFilterAkte] = useState([]);
   const [namaHari, setNamaHari] = useState("");
 
   function handleChange(e) {
@@ -43,9 +38,6 @@ const EditPengajuan = () => {
 
   const fetchProducts = async () => {
     await axios.get(`https://subdomain.sudbalam.com/api/data/${id}`).then(({ data }) => {
-      setProducts(data);
-      console.log(data)
-      console.log(data.nik_alm)
       setNik_Alm(data.nik_alm);
       setNama_Alm(data.nama_alm);
       setNik_Waris(data.nik_waris);
@@ -107,7 +99,7 @@ const EditPengajuan = () => {
       })
       .catch(({ response }) => {
         if (response.status === 422) {
-          setValidationError(response.data.errors);
+          console.log(response);
         } else {
           Swal.fire({
             text: response.data.message,

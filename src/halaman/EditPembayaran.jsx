@@ -6,12 +6,9 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Topbar from "../component/Topbar";
 import Navbar from "../component/Navbar";
-import { useRef } from "react";
-
 
 export const EditPembayaran = () => {
-  const { id, nik_alm_1 } = useParams();
-  console.log(nik_alm_1)
+  const { nik_alm_1 } = useParams();
   const [no_bkp, setNo_bkp] = useState("");
   const [nik_alm, setNik_Alm] = useState("");
   const [nama_alm, setNama_Alm] = useState("");
@@ -19,43 +16,39 @@ export const EditPembayaran = () => {
   const [nama_waris, setNama_Waris] = useState("");
   const [bantuan, setBantuan] = useState("");
   const [tlg_pembayaran, setTlg_Pembayaran] = useState("");
-  const [products, setProducts] = useState([]);
-  const [validationError, setValidationError] = useState({});
   const navigate = useNavigate();
   const [namaHari, setNamaHari] = useState("");
 
-function handleChange(e) {
-  const date = new Date(e.target.value);
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  const namaHariBaru = new Intl.DateTimeFormat("id-ID", options).format(date);
-  setTlg_Pembayaran(e.target.value);
-  setNamaHari(namaHariBaru);
-}
+  function handleChange(e) {
+    const date = new Date(e.target.value);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const namaHariBaru = new Intl.DateTimeFormat("id-ID", options).format(date);
+    setTlg_Pembayaran(e.target.value);
+    setNamaHari(namaHariBaru);
+  }
 
   const fetchProducts = async () => {
     await axios
       .get(`https://subdomain.sudbalam.com/api/dataterima/${nik_alm_1}`)
       .then(({ data }) => {
-        setProducts(data[0]);
-        setNo_bkp(data[0].no_bkp);//
+        setNo_bkp(data[0].no_bkp); //
         setNamaHari(data[0].tlg_pembayaran);
-        setNik_Alm(data[0].nik_alm);//
-        setNama_Alm(data[0].nama_alm);//
+        setNik_Alm(data[0].nik_alm); //
+        setNama_Alm(data[0].nama_alm); //
         setNik_Waris(data[0].nik_waris);
         setNama_Waris(data[0].nama_waris);
         setBantuan(data[0].bantuan);
-        // setGambar(data[0].gambar)
       });
   };
 
-  useEffect(() =>{
+  useEffect(() => {
     fetchProducts();
-    }, [])
+  }, []);
 
   const createProduct = async (e) => {
     e.preventDefault();
@@ -96,7 +89,7 @@ function handleChange(e) {
       })
       .catch(({ response }) => {
         if (response.status === 422) {
-          setValidationError(response.data.errors);
+          console.log(response);
         } else {
           Swal.fire({
             text: response.data.message,
@@ -112,8 +105,7 @@ function handleChange(e) {
       <Navbar />
       <main className="body">
         <h5 className="judul-pengajuan">
-          EDIT DATA PEMBAYARAN {nama_alm} DENGAN NIK{" "}
-          {nik_alm}
+          EDIT DATA PEMBAYARAN {nama_alm} DENGAN NIK {nik_alm}
         </h5>
         <form className="form-pengajuan" onSubmit={createProduct}>
           <div className="form_pertama">

@@ -1,14 +1,12 @@
 import React from "react";
-import Navbar from "../component/Navbar";
 import NavbarTeam from "../component/NavbarTeam";
 import Topbar from "../component/Topbar";
 import DaftarPembayaranTeam from "./DaftarPembayaranTeam";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { useNavigate } from "react-router";
 
 const DataPembayaranTeam = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
@@ -16,17 +14,13 @@ const DataPembayaranTeam = () => {
       navigate("/login");
       return;
     }
-
-    setIsAuthenticated(true);
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="app-container">
       <Topbar />
       <NavbarTeam />
-
       <DaftarPembayaranTeam />
-
       <footer className="footer">
         Sistem Penyaluran Dana Santunan Kematian &copy; 2024
       </footer>

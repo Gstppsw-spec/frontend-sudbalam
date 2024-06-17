@@ -16,7 +16,7 @@ const HeaderComponent = () => {
                   </div>
                 </td>
                 <td align="right">
-                  <img src={profile} style={{ height: "50px" }}></img>
+                  <img src={profile} style={{ height: "50px" }} alt="header img"></img>
                 </td>
               </tr>
             </tbody>

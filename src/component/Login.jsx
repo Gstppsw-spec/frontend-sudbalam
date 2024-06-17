@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import "../style/login.css";
@@ -6,24 +6,19 @@ import "../style/login.css";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState(null);
-  const [role, setRole] = useState(null);
+
   const [validation, setValidation] = useState([]);
   const navigate = useNavigate();
 
   const loginHandler = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
-    formData.append("role", role);
-
+   
     await axios
       .post("https://subdomain.sudbalam.com/api/login", formData)
       .then((response) => {
-        setToken(response.data.token);
-        setRole(response.data.role);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.role);
         if (response.data.role === "admin") {

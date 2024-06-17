@@ -1,19 +1,17 @@
 import FileSaver from "file-saver";
-import { Link } from "react-router-dom";
 import XLSX from "xlsx/dist/xlsx.full.min";
-import { json, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import React, { useMemo } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { useState, useEffect } from "react";
-import { Container, Button, Row, Col, Spinner } from "reactstrap";
+import {Row, Col } from "reactstrap";
 import paginationFactory from "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator";
 import ToolkitProvider, {
   Search,
-  CSVExport,
 } from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit";
 import Swal from "sweetalert2";
 import axios from "axios";
-import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
+import filterFactory from "react-bootstrap-table2-filter";
 import {
   DeleteOutlineOutlined,
   ModeEditOutlineOutlined,
@@ -39,7 +37,7 @@ function DaftarSelesai() {
       navigate("/login");
       return;
     }
-  }, []);
+  }, [navigate]);
 
   const {
     data: paginatedData,

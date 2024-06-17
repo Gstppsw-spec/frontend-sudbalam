@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-import profile from ".././img/balam.png";
 import ".././style/beranda.css";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -10,35 +8,28 @@ import HeaderComponent from "../halaman/HeaderComponent";
 
 const ResultCard = (props) => {
   const [keyword, setKeyWord] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [pencarian, setPencarian] = useState("");
   const [items, setItems] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [filterStatus, setFilterStatus] = useState("ditolak");
   const [pembayaran, setPembayaran] = useState([]);
   const [filterPembayaran, setFilterPembayaran] = useState([]);
   const [showImage, setShowImage] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     fetch("https://subdomain.sudbalam.com/api/datatolakumum")
       .then((res) => res.json())
       .then(
         (result) => {
           setItems(result);
-          setIsLoaded(true);
         },
         (error) => {
-          setIsLoaded(true);
-          setError(error);
+          console.log(error)
         }
       );
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     fetch("https://subdomain.sudbalam.com/api/dataterimaumum")
       .then((res) => res.json())
       .then((result) => {
@@ -50,13 +41,13 @@ const ResultCard = (props) => {
 
   useEffect(() => {
     setFilteredData(items.filter((item) => item.nik_alm === hasil_prop));
-  }, [items, filterStatus]);
+  }, [items, hasil_prop]);
 
   useEffect(() => {
     setFilterPembayaran(
       pembayaran.filter((item) => item.nik_alm === hasil_prop)
     );
-  }, [pembayaran]);
+  }, [pembayaran, hasil_prop]);
 
   const searchButtonHandler = (e) => {
     e.preventDefault();
@@ -163,6 +154,7 @@ const ResultCard = (props) => {
                         width="100%"
                         height="100%"
                         style={{ cursor: "pointer" }}
+                        
                       />
                       {showImage && (
                         <div
@@ -182,6 +174,7 @@ const ResultCard = (props) => {
                           <img
                             src={`https://subdomain.sudbalam.com/gambar/${item.gambar}`}
                             style={{ maxWidth: "90%", maxHeight: "90%" }}
+                            alt="bukti pembayaran"
                           />
                         </div>
                       )}

@@ -8,7 +8,6 @@ import axios from "axios";
 
 const UpdateDataTolak = () => {
   const navigate = useNavigate();
-  const [validationError, setValidationError] = useState({});
   const { nik_alm, id, nama_alm } = useParams();
   const [keterrangan, setKeterrangan] = useState("");
   const [loading, setLoading] = useState(false)
@@ -38,7 +37,7 @@ const UpdateDataTolak = () => {
       })
       .catch(({ response }) => {
         if (response.status === 422) {
-          setValidationError(response.data.errors);
+          console.log(response);
         } else {
           Swal.fire({
             text: response.data.message,

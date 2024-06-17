@@ -12,15 +12,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
+
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(null);
 
-  const [user, setUser] = useState({});
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
@@ -28,14 +25,11 @@ const Home = () => {
       navigate('/login');
       return;
     }
-
-    setIsAuthenticated(true);
-  }, [setIsAuthenticated, localStorage, navigate]);
+  }, [ navigate]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    console.log(token, 'ini token');
     fetch("https://subdomain.sudbalam.com/api/user", {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -49,10 +43,9 @@ const Home = () => {
         },
         (error) => {
           setIsLoaded(true);
-          setError(error);
         }
       );
-  }, [setIsAuthenticated, localStorage, navigate]);
+  }, [ navigate]);
 
   const deleteProduct = async (id) => {
     const isConfirm = await Swal.fire({

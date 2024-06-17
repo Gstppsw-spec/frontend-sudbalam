@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router";
 import "../style/listData.css";
 
 function DaftarPembayaranTeam() {
@@ -11,7 +9,6 @@ function DaftarPembayaranTeam() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
-  const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -189,6 +186,7 @@ function DaftarPembayaranTeam() {
                               onClick={() => setShowImage(false)}
                             >
                               <img
+                              alt="bukti pembayaran"
                                 src={currentImage}
                                 style={{ maxWidth: "90%", maxHeight: "90%" }}
                               />

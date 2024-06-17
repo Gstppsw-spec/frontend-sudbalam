@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../style/pengajuan.css";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate} from "react-router";
 import Swal from "sweetalert2";
 import Navbar from "../component/Navbar";
 import Topbar from "../component/Topbar";
@@ -11,7 +11,6 @@ function TambahAkun() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const navigate = useNavigate();
-  const [validationError, setValidationError] = useState({});
 
   const createProduct = async (e) => {
     const token = localStorage.getItem('token');
@@ -38,7 +37,7 @@ function TambahAkun() {
       })
       .catch(({ response }) => {
         if (response.status === 422) {
-          setValidationError(response.data.errors);
+          console.log(response);
         } else {
           Swal.fire({
             text: response.data.message,

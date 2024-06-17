@@ -15,17 +15,13 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 import { SelectYear } from "../component/SelectYear";
 
 function DaftarPembayaran(props) {
-  const [selectedOption, setSelectedOption] = useState("");
-  const [isOptionSelected, setIsOptionSelected] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
   const { SearchBar } = Search;
   const navigate = useNavigate();
   const baseImage = process.env.BASE_IMAGE
 
-  const changeTextColor = () => {
-    setIsOptionSelected(true);
-  };
+
 
   const {
     data: paginatedData,
@@ -377,6 +373,7 @@ function DaftarPembayaran(props) {
             onClick={() => setShowImage(false)}
           >
             <img
+            alt="bukti pembayaran"
               src={currentImage}
               style={{ maxWidth: "90%", maxHeight: "90%" }}
             />

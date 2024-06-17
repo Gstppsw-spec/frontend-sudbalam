@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "../style/pengajuan.css";
-import profile from ".././img/balam.png";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -14,24 +12,19 @@ import HeaderComponent from "./HeaderComponent";
 
 const Pengajuan = () => {
   const navigate = useNavigate();
-  const [validationError, setValidationError] = useState({});
   const [loading, setLoading] = useState(false);
-
   const [nik_alm, setNik_Alm] = useState("");
   const [nama_alm, setNama_Alm] = useState("");
   const [nik_waris, setNik_Waris] = useState("");
   const [nama_waris, setNama_Waris] = useState("");
   const [no_akte, setNo_Akte] = useState("");
   const [alamat_alm, setAlamat_Alm] = useState("");
-  const [kelurahan_alm, setKelurahan_Alm] = useState("");
-  const [kecamatan_alm, setKecamatan_Alm] = useState("");
   const [tgl_alm, setTgl_Alm] = useState("");
   const [jam_alm, setJam_Alm] = useState("");
   const [tlpn_waris, setTlpn_Waris] = useState("");
   const [filterPengajuan, setFilterPengajuan] = useState([]);
   const [filterAkte, setFilterAkte] = useState([]);
   const [namaHari, setNamaHari] = useState("");
-
   const [inputValue, setInputValue] = useState("");
   const [selected, setSelected] = useState("");
   const [open, setOpen] = useState(false);
@@ -41,9 +34,6 @@ const Pengajuan = () => {
   const [selectedKel, setSelectedKel] = useState("");
   const [openKel, setOpenKel] = useState(false);
 
-  const [coba, setCoba] = useState([]);
-
-  console.log(kecamatan_alm);
 
   function handleChange(e) {
     const date = new Date(e.target.value);
@@ -57,36 +47,6 @@ const Pengajuan = () => {
     setTgl_Alm(e.target.value);
     setNamaHari(namaHariBaru);
   }
-
-  const hasilNamaAlm = nama_waris
-    .toLowerCase()
-    .split(" ")
-    .map((kata) => kata.charAt(0).toUpperCase() + kata.slice(1))
-    .join(" ");
-
-  const hasilNamaWaris = nama_alm
-    .toLowerCase()
-    .split(" ")
-    .map((kata) => kata.charAt(0).toUpperCase() + kata.slice(1))
-    .join(" ");
-
-  const hasilAlamat = alamat_alm
-    .toLowerCase()
-    .split(" ")
-    .map((kata) => kata.charAt(0).toUpperCase() + kata.slice(1))
-    .join(" ");
-
-  const hasilKelurahan = kelurahan_alm
-    .toLowerCase()
-    .split(" ")
-    .map((kata) => kata.charAt(0).toUpperCase() + kata.slice(1))
-    .join(" ");
-
-  const hasilKecamatan = kecamatan_alm
-    .toLowerCase()
-    .split(" ")
-    .map((kata) => kata.charAt(0).toUpperCase() + kata.slice(1))
-    .join(" ");
 
   const hasilAkte = no_akte.toUpperCase();
 
@@ -202,7 +162,7 @@ const Pengajuan = () => {
       })
       .catch(({ response }) => {
         if (response.status === 422) {
-          setValidationError(response.data.errors);
+          console.log(response);
           setLoading(true);
         } else {
           setLoading(true);

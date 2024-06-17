@@ -7,7 +7,6 @@ import { useNavigate } from "react-router";
 
 const DataPembayaran = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
@@ -16,8 +15,7 @@ const DataPembayaran = () => {
       return;
     }
 
-    setIsAuthenticated(true);
-  }, []);
+  }, [navigate]);
   return (
     <div className="app-container">
       <Topbar />

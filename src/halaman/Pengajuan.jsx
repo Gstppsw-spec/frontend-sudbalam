@@ -28,8 +28,8 @@ const Pengajuan = () => {
   const [inputValue, setInputValue] = useState("");
   const [selected, setSelected] = useState("");
   const [open, setOpen] = useState(false);
-  const [kec, setKec] = useState(dataArray_kecamatan);
-  const [kel, setKel] = useState(dataKel);
+  const [kec] = useState(dataArray_kecamatan);
+  const [kel] = useState(dataKel);
   const [inputValueKel, setInputValueKel] = useState("");
   const [selectedKel, setSelectedKel] = useState("");
   const [openKel, setOpenKel] = useState(false);

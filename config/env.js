@@ -89,7 +89,8 @@ function getClientEnvironment(publicUrl) {
         // It is defined here so it is available in the webpackHotDevClient.
         FAST_REFRESH: process.env.FAST_REFRESH !== 'false',
         BASE_URL: process.env.REACT_APP_MY_API_KEY,
-        BASE_IMAGE: process.env.REACT_APP_MY_API_IMAGE
+        BASE_IMAGE: process.env.REACT_APP_MY_API_IMAGE,
+        BASE_BLANGKO: process.env.REACT_APP_MY_API_BLANGKO
       }
     );
   // Stringify all values so we can feed into webpack DefinePlugin

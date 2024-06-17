@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useYearQuery } from "../api/data-selesai/useYearQuery";
 
 export const SelectYear = ({
@@ -8,8 +8,27 @@ export const SelectYear = ({
   setSelectedOption,
 }) => {
   const { data: dataYear } = useYearQuery();
+  const [year, setYear] = useState([]);
 
-  console.log(dataYear);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("https://subdomain.sudbalam.com/api/tahun", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setYear(result);
+          
+          console.log(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, [setYear]);
 
   return (
     <div>
@@ -27,7 +46,7 @@ export const SelectYear = ({
           <option value="" className="text-tahun">
             Pilih tahun
           </option>
-          {dataYear?.map((year) => (
+          {year?.map((year) => (
             <option value={year.value} className="text-body dark:text-bodydark">
               {year.year}
             </option>

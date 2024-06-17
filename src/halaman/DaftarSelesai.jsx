@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import React, { useMemo } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { useState, useEffect } from "react";
-import {Row, Col } from "reactstrap";
+import { Row, Col } from "reactstrap";
 import paginationFactory from "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator";
 import ToolkitProvider, {
   Search,
@@ -23,11 +23,11 @@ function DaftarSelesai() {
   const { SearchBar } = Search;
   const [selectedOption, setSelectedOption] = useState("");
   const [isOptionSelected, setIsOptionSelected] = useState(false);
+  const [items, setItems] = useState([]);
 
   const changeTextColor = () => {
     setIsOptionSelected(true);
   };
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,25 +39,41 @@ function DaftarSelesai() {
     }
   }, [navigate]);
 
-  const {
-    data: paginatedData,
-    isLoading,
-    isError,
-  } = useDoneQuery({
-    variables: {
-      year: selectedOption,
-    },
-  });
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("https://subdomain.sudbalam.com/api/dataterima", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setItems(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, [setItems]);
 
-  const dataDone = useMemo(
-    () => paginatedData?.pages?.flatMap((page) => page),
-    [paginatedData]
-  );
+  // const {
+  //   data: paginatedData,
+  //   isLoading,
+  //   isError,
+  // } = useDoneQuery({
+  //   variables: {
+  //     year: selectedOption,
+  //   },
+  // });
 
-  console.log(dataDone);
+  // const dataDone = useMemo(
+  //   () => paginatedData?.pages?.flatMap((page) => page),
+  //   [paginatedData]
+  // );
 
   const handleExport = () => {
-    const dataArray = dataDone?.map((d) => [
+    const dataArray = items?.map((d) => [
       d.no_bkp,
       d.nama_alm,
       d.nik_alm,
@@ -129,7 +145,6 @@ function DaftarSelesai() {
   const deleteData = async (nik_alm) => {
     const isConfirm = await Swal.fire({
       title: "Yakin untuk hapus data?",
-      // text: "Data pengajuan akan diedit!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -143,10 +158,7 @@ function DaftarSelesai() {
       return;
     }
     const formData = new FormData();
-    console.log(nik_alm);
-
     formData.append("nik_alm", nik_alm);
-
     const token = localStorage.getItem("token");
     await axios
       .post(`https://subdomain.sudbalam.com/api/hapusdata`, formData, {
@@ -159,7 +171,6 @@ function DaftarSelesai() {
           icon: "success",
           text: data.message,
         });
-        // navigate("/dataselesai");
       })
       .catch(({ response }) => {
         if (response.status === 422) {
@@ -175,7 +186,7 @@ function DaftarSelesai() {
     return index + 1;
   };
 
-  const numberedData = dataDone?.map((item, index) => {
+  const numberedData = items?.map((item, index) => {
     return { ...item, no: getNumber(index) };
   });
 
@@ -515,9 +526,9 @@ function DaftarSelesai() {
     ],
   };
 
-  if (isError || isLoading) {
-    return <div className="loading"></div>;
-  }
+  // if (isError || isLoading) {
+  //   return <div className="loading"></div>;
+  // }
 
   return (
     <main className="body">
@@ -543,7 +554,6 @@ function DaftarSelesai() {
                       {...props.searchProps}
                       placeholder="Search .."
                       searchPlaceholder=""
-                      
                     />
                   </div>
                   <div className="year">

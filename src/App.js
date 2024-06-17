@@ -20,6 +20,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { EditPembayaran } from "./halaman/EditPembayaran";
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Blangko from "./halaman/Blangko";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ function App() {
           <Route exact path="/alur-pengajuan" element={<AlurPengajuan />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/pengajuan" element={<Pengajuan />} />
+          <Route exact path="/blangko" element={<Blangko />} />
           <Route exact path="/hasil/:word" element={<HasilPengajuan />} />
           <Route exact path="/dashboard">
             <Route index element={<Home />} />

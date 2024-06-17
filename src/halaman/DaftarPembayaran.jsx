@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import "../style/listData.css";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { useState} from "react";
 import { Row, Col} from "reactstrap";
@@ -12,7 +12,6 @@ import Swal from "sweetalert2";
 import { usePaymentQuery } from "../api/pembayaran/usePaymentQuery";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-import { SelectYear } from "../component/SelectYear";
 
 function DaftarPembayaran(props) {
   const [showImage, setShowImage] = useState(false);
@@ -20,7 +19,27 @@ function DaftarPembayaran(props) {
   const { SearchBar } = Search;
   const navigate = useNavigate();
   const baseImage = process.env.BASE_IMAGE
+  const [items, setItems] = useState([]);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetch("https://subdomain.sudbalam.com/api/dataterima", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setItems(result);
+          
+          console.log(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, [setItems]);
 
 
   const {
@@ -35,7 +54,6 @@ function DaftarPembayaran(props) {
   );
 
   
-
   const editData = async (id, nik_alm) => {
     const isConfirm = await Swal.fire({
       title: "Yakin untuk edit data?",
@@ -64,7 +82,7 @@ function DaftarPembayaran(props) {
     return index + 1;
   };
 
-  const numberedData = data?.map((item, index) => {
+  const numberedData = items?.map((item, index) => {
     return { ...item, no: getNumber(index) };
   });
 

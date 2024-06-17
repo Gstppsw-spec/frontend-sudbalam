@@ -36,6 +36,11 @@ const HeaderComponent = () => {
               </Link>
             </li>
             <li>
+              <Link to="/blangko" className="linkkuh">
+                BLANGKO
+              </Link>
+            </li>
+            <li>
               <Link to="/login" className="linkkuh">
                 LOGIN
               </Link>

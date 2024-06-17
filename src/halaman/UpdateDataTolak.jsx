@@ -8,7 +8,7 @@ import axios from "axios";
 
 const UpdateDataTolak = () => {
   const navigate = useNavigate();
-  const { nik_alm, id, nama_alm } = useParams();
+  const { nik_alm, nama_alm } = useParams();
   const [keterrangan, setKeterrangan] = useState("");
   const [loading, setLoading] = useState(false)
 

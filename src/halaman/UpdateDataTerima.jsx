@@ -9,7 +9,7 @@ import { useRef } from "react";
 
 const UpdateDataTerima = () => {
   const navigate = useNavigate();
-  const { nik_alm, id, nama_alm } = useParams();
+  const { nik_alm, nama_alm } = useParams();
   const [no_bkp, setNo_Bkp] = useState("");
   const [tlg_pembayaran, setTlg_Pembayaran] = useState("");
   const [bantuan, setBantuan] = useState(1000000);

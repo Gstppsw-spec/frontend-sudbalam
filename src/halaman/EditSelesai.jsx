@@ -40,24 +40,26 @@ const EditSelesai = () => {
     await axios
       .get(`https://subdomain.sudbalam.com/api/dataterima/${nik_alm_1}`)
       .then(({ data }) => {
-        setNo_bkp(data[0].no_bkp);//
-        setNik_Alm(data[0].nik_alm);//
-        setNama_Alm(data[0].nama_alm);//
-        setNik_Waris(data[0].nik_waris);//
-        setNama_Waris(data[0].nama_waris);//
-        setNo_Akte(data[0].no_akte);//
-        setAlamat_Alm(data[0].alamat_alm);//
-        setKelurahan_Alm(data[0].kelurahan_alm);//
-        setKecamatan_Alm(data[0].kecamatan_alm);//
-        setNamaHari(data[0].tgl_alm);//
-        setJam_Alm(data[0].jam_alm);//
-        setTlpn_Waris(data[0].tlpn_waris);//
+        setNo_bkp(data[0].no_bkp);
+        setNik_Alm(data[0].nik_alm);
+        setNama_Alm(data[0].nama_alm);
+        setNik_Waris(data[0].nik_waris);
+        setNama_Waris(data[0].nama_waris);
+        setNo_Akte(data[0].no_akte);
+        setAlamat_Alm(data[0].alamat_alm);
+        setKelurahan_Alm(data[0].kelurahan_alm);
+        setKecamatan_Alm(data[0].kecamatan_alm);
+        setNamaHari(data[0].tgl_alm);
+        setJam_Alm(data[0].jam_alm);
+        setTlpn_Waris(data[0].tlpn_waris);
       });
   };
 
+
   useEffect(() =>{
     fetchProducts();
-  }, [])
+  }, [nik_alm_1])
+  
 
   const createProduct = async (e) => {
     e.preventDefault();

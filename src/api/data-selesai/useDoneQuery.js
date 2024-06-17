@@ -1,9 +1,9 @@
-import { createInfiniteQuery } from "react-query-kit";
+import { createInfiniteQuery, createQuery } from "react-query-kit";
 import { client } from "../common/client";
 
-export const useDoneQuery = createInfiniteQuery({
+export const useDoneQuery = createQuery({
   primaryKey: "dataterima",
-  queryFn: ({ queryKey: [primaryKey, {search, limit, page, year}], pageParam = 1 }) => {
+  queryFn: ({ queryKey: [primaryKey, {year}]}) => {
     return client.get(`${primaryKey}?tahun=${year}`);
   },
 });

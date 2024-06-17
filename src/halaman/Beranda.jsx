@@ -3,8 +3,14 @@ import ".././style/beranda.css";
 import KontakInformasi from "./KontakInformasi";
 import PengajuanComponent from "./PengajuanComponent";
 import HeaderComponent from "./HeaderComponent";
+import { usePengumumanQuery } from "../api/persyaratan/usePengumumanQuery";
 
 const Beranda = (props) => {
+
+  const {data} = usePengumumanQuery()
+
+  console.log(data);
+
   return (
     <div className="app-container">
       <HeaderComponent/>
@@ -12,9 +18,9 @@ const Beranda = (props) => {
       <main className="body">
         <div className="body-part-satu">
           <div className="body-pembuka">
-            <h3 className="judul-pembuka">
+            <h4 style={{fontWeight: 'bold'}}>
               Selamat Datang di SISTEM PENYALURAN SANTUNAN UANG DUKA
-            </h3>
+            </h4>
             <span>
               "Melalui sistem ini Anda dapat melihat status perkembangan
               pencairan santunan uang duka yang diberikan oleh Badan
@@ -27,6 +33,11 @@ const Beranda = (props) => {
               pengajuan, syarat serta ketentuan apa saja yang dibutuhkan untuk
               bisa mendaftarkan pengajuan dana santunan kematian.
             </span>
+
+            <div style={{marginTop: 10} }
+            
+            dangerouslySetInnerHTML={{ __html: data }}
+          ></div>
           </div>
           <br />
 
@@ -36,7 +47,7 @@ const Beranda = (props) => {
       </main>
       <KontakInformasi />
       <footer className="footer">
-        Sistem Penyaluran Dana Santunan Kematian &copy; 2022
+        Sistem Penyaluran Dana Santunan Kematian &copy; 2024
       </footer>
     </div>
   );

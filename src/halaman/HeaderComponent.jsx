@@ -28,7 +28,7 @@ const HeaderComponent = () => {
         <nav>
           <ul>
             <li>
-              <Link className="linkkuh">BERANDA</Link>
+              <Link to={"/"} className="linkkuh">BERANDA</Link>
             </li>
             <li>
               <Link to="/alur-pengajuan" className="linkkuh">

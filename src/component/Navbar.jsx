@@ -15,38 +15,14 @@ function Navbar() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
-  }, []);
+  }, [localStorage]);
+
+  const token = localStorage.getItem("token");
   return (
-    // <div className="navigasi_bar n-admin">
-    //   <nav>
-    //     <ul>
-    //       <li>
-    //         <Link to="/dashboard" className="linkkuh dash">
-    //           DASHBOARD
-    //         </Link>
-    //       </li>
-    //       <li>
-    //         <Link to="/dataselesai" className="linkkuh dash">
-    //         DATA SELESAI
-    //         </Link>
-    //       </li>
-    //       <li>
-    //         <Link to="/datapembayaran" className="linkkuh dash">
-    //         DATA PEMBAYARAN
-    //         </Link>
-    //       </li>
-    //       <li>
-    //         <Link to="/datatolak" className="linkkuh dash">
-    //         DATA TOLAK
-    //         </Link>
-    //       </li>
-    //     </ul>
-    //   </nav>
-    // </div>
     <div className="navigasi_bar n-admin">
       <nav>
         <ul>
-          {token == null ? (
+          {token !== null ? (
             <>
               <li>
                 <Link to="/dashboard" className="linkkuh dash">

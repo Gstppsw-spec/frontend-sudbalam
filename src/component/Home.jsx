@@ -30,10 +30,12 @@ const Home = () => {
     }
 
     setIsAuthenticated(true);
-  }, []);
+  }, [setIsAuthenticated, localStorage, navigate]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+
+    console.log(token, 'ini token');
     fetch("https://subdomain.sudbalam.com/api/user", {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -50,7 +52,7 @@ const Home = () => {
           setError(error);
         }
       );
-  }, []);
+  }, [setIsAuthenticated, localStorage, navigate]);
 
   const deleteProduct = async (id) => {
     const isConfirm = await Swal.fire({
@@ -68,13 +70,6 @@ const Home = () => {
     if (!isConfirm) {
       return;
     }
-
-    // const fetchProducts = async () => {
-    //   await axios.get(`https://subdomain.sudbalam.com/api/user`).then(({ data }) => {
-    //     setProducts(data);
-    //   });
-    // };
-
     await axios
       .delete(`https://subdomain.sudbalam.com/api/user/${id}`)
       .then(({ data }) => {
@@ -160,7 +155,7 @@ const Home = () => {
       <br />
       <br />
       <footer className="footer">
-        Sistem Penyaluran Dana Santunan Kematian &copy; 2022
+        Sistem Penyaluran Dana Santunan Kematian &copy; 2024
       </footer>
     </div>
   );

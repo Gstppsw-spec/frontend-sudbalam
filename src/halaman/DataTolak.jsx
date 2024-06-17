@@ -11,7 +11,7 @@ const DataTolak = () => {
       <DaftarTolak />
       <br /><br />
       <footer className="footer">
-        Sistem Penyaluran Dana Santunan Kematian &copy; 2022
+        Sistem Penyaluran Dana Santunan Kematian &copy; 2024
       </footer>
     </div>
   );

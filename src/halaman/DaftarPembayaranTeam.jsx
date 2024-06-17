@@ -5,8 +5,8 @@ import { useNavigate } from "react-router";
 import "../style/listData.css";
 
 function DaftarPembayaranTeam() {
-const [showImage, setShowImage] = useState(false);
-const [currentImage, setCurrentImage] = useState(null);
+  const [showImage, setShowImage] = useState(false);
+  const [currentImage, setCurrentImage] = useState(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
@@ -16,11 +16,11 @@ const [currentImage, setCurrentImage] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    fetch("https://subdomain.sudbalam.com/api/dataterima",{
+    const token = localStorage.getItem("token");
+    fetch("https://subdomain.sudbalam.com/api/dataterima", {
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => res.json())
       .then(
@@ -39,13 +39,12 @@ const [currentImage, setCurrentImage] = useState(null);
     setFilteredData(
       items.filter(
         (item) =>
-          (item.nama_alm.toLowerCase().includes(searchTerm.toLowerCase())
-          || item.nik_alm.toLowerCase().includes(searchTerm.toLowerCase())
-          || item.nama_waris.toLowerCase().includes(searchTerm.toLowerCase())
-          || item.nik_waris.toLowerCase().includes(searchTerm.toLowerCase())
-          || item.no_bkp.toLowerCase().includes(searchTerm.toLowerCase())
-          || item.tlg_pembayaran.toLowerCase().includes(searchTerm.toLowerCase())
-          )
+          item.nama_alm.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.nik_alm.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.nama_waris.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.nik_waris.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.no_bkp.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.tlg_pembayaran.toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
   }, [items, searchTerm]);
@@ -53,7 +52,9 @@ const [currentImage, setCurrentImage] = useState(null);
   let dataLimit = 100;
   let pageLimit = 5;
 
-  const [pages, setPages] = useState(Math.ceil(filteredData.length / dataLimit));
+  const [pages, setPages] = useState(
+    Math.ceil(filteredData.length / dataLimit)
+  );
   const [currentPage, setCurrentPage] = useState(1);
 
   function goToNextPage() {
@@ -113,7 +114,7 @@ const [currentImage, setCurrentImage] = useState(null);
             id="search-form"
             placeholder="search"
             value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
@@ -123,7 +124,7 @@ const [currentImage, setCurrentImage] = useState(null);
               <table className="list-data">
                 <thead>
                   <tr className="hidden">
-                  <th className="listnih">No</th>
+                    <th className="listnih">No</th>
                     <th className="listnih">Nomor BKP</th>
                     <th className="listnih">NIK Almarhum</th>
                     <th className="listnih">Nama Almarhum</th>
@@ -134,11 +135,11 @@ const [currentImage, setCurrentImage] = useState(null);
                   </tr>
                 </thead>
                 <tbody>
-                {filteredData.length > 0 &&
+                  {filteredData.length > 0 &&
                     getPaginatedData(filteredData).map((row, key) => (
                       <tr key={key}>
                         <td className="listnoh" data-label="Nomor BKP">
-                          {key+1}
+                          {key + 1}
                         </td>
                         <td className="listnoh" data-label="Nomor BKP">
                           {row.no_bkp}
@@ -159,39 +160,40 @@ const [currentImage, setCurrentImage] = useState(null);
                           {row.tlg_pembayaran}
                         </td>
                         <td className="listnoh" data-label="Bukti Pembayaran">
-
-<img
-  className="gambarPembayaran"
-  key={key}
-  src={`https://subdomain.sudbalam.com/gambar/${row.gambar}`}
-  alt="bukti pembayaran"
-  onClick={() => {
-    setCurrentImage(`https://subdomain.sudbalam.com/gambar/${row.gambar}`);
-    setShowImage(true);
-  }}
-  width="50px"
-/>
-{showImage && (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    }}
-    onClick={() => setShowImage(false)}
-  >
-    <img
-      src={currentImage}
-      style={{ maxWidth: "90%", maxHeight: "90%" }}
-    />
-  </div>
-)}
+                          <img
+                            className="gambarPembayaran"
+                            key={key}
+                            src={`https://subdomain.sudbalam.com/gambar/${row.gambar}`}
+                            alt="bukti pembayaran"
+                            onClick={() => {
+                              setCurrentImage(
+                                `https://subdomain.sudbalam.com/gambar/${row.gambar}`
+                              );
+                              setShowImage(true);
+                            }}
+                            width="50px"
+                          />
+                          {showImage && (
+                            <div
+                              style={{
+                                position: "fixed",
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                              onClick={() => setShowImage(false)}
+                            >
+                              <img
+                                src={currentImage}
+                                style={{ maxWidth: "90%", maxHeight: "90%" }}
+                              />
+                            </div>
+                          )}
                         </td>
                       </tr>
                     ))}

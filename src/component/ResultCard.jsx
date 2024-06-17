@@ -248,7 +248,7 @@ const ResultCard = (props) => {
       <KontakInformasi />
 
       <footer className="footer">
-        Sistem Penyaluran Dana Santunan Kematian &copy; 2022
+        Sistem Penyaluran Dana Santunan Kematian &copy; 2024
       </footer>
     </div>
   );

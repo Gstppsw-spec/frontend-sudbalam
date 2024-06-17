@@ -2,7 +2,7 @@ import FileSaver from "file-saver";
 import { Link } from "react-router-dom";
 import XLSX from "xlsx/dist/xlsx.full.min";
 import { json, useNavigate } from "react-router";
-import React from "react";
+import React, { useMemo } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { useState, useEffect } from "react";
 import { Container, Button, Row, Col, Spinner } from "reactstrap";
@@ -13,20 +13,25 @@ import ToolkitProvider, {
 } from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit";
 import Swal from "sweetalert2";
 import axios from "axios";
-import filterFactory, {selectFilter} from "react-bootstrap-table2-filter";
+import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
+import {
+  DeleteOutlineOutlined,
+  ModeEditOutlineOutlined,
+} from "@mui/icons-material";
+import { useDoneQuery } from "../api/data-selesai/useDoneQuery";
+import { SelectYear } from "../component/SelectYear";
 
 function DaftarSelesai() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [validationError, setValidationError] = useState({});
-  const [items, setItems] = useState([]);
-  const [error, setError] = useState(null);
-  const [data, setData] = useState([]);
   const { SearchBar } = Search;
-  const { ExportCSVButton } = CSVExport;
-  const [hapus, setHapus] = useState([]);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [isOptionSelected, setIsOptionSelected] = useState(false);
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const changeTextColor = () => {
+    setIsOptionSelected(true);
+  };
+
   const navigate = useNavigate();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
@@ -34,24 +39,27 @@ function DaftarSelesai() {
       navigate("/login");
       return;
     }
-
-    setIsAuthenticated(true);
   }, []);
 
-  //import data ke excel
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetch("https://subdomain.sudbalam.com/api/dataterima", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => setData(json));
-  }, []);
+  const {
+    data: paginatedData,
+    isLoading,
+    isError,
+  } = useDoneQuery({
+    variables: {
+      year: selectedOption,
+    },
+  });
+
+  const dataDone = useMemo(
+    () => paginatedData?.pages?.flatMap((page) => page),
+    [paginatedData]
+  );
+
+  console.log(dataDone);
 
   const handleExport = () => {
-    const dataArray = data.map((d) => [
+    const dataArray = dataDone?.map((d) => [
       d.no_bkp,
       d.nama_alm,
       d.nik_alm,
@@ -93,26 +101,6 @@ function DaftarSelesai() {
     const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     FileSaver.saveAs(new Blob([wbout]), "data.xlsx");
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetch("https://subdomain.sudbalam.com/api/dataterima", {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setItems(result);
-          setIsLoaded(true);
-        },
-        (error) => {
-          setIsLoaded(true);
-          setError(error);
-        }
-      );
-  }, []);
 
   const defaultSorted = [
     {
@@ -177,7 +165,6 @@ function DaftarSelesai() {
       })
       .catch(({ response }) => {
         if (response.status === 422) {
-          setValidationError(response.data.errors);
         } else {
           Swal.fire({
             text: response.data.message,
@@ -190,15 +177,9 @@ function DaftarSelesai() {
     return index + 1;
   };
 
-  const numberedData = items.map((item, index) => {
+  const numberedData = dataDone?.map((item, index) => {
     return { ...item, no: getNumber(index) };
   });
-
-  // const selectOptions = {
-  //   0: 'Sukabumi',
-  //   1: 'Bad',
-  //   2: 'unknown'
-  // };
 
   const columns = [
     {
@@ -209,19 +190,6 @@ function DaftarSelesai() {
         fontSize: "10px",
         textAlign: "center",
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "12px",
-      //     width: "2%",
-      //     textAlign: "center",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //     cursor: "pointer",
-      //   };
-      // },
-      // headerAlign: "center",
-      // headerClasses: "custom-header-style",
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -248,17 +216,7 @@ function DaftarSelesai() {
         }
         return Number(b) - Number(a);
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     textAlign: "center",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
+
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -280,17 +238,6 @@ function DaftarSelesai() {
         textAlign: "center",
       },
       headerAlign: "center",
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     textAlign: "center",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -311,16 +258,7 @@ function DaftarSelesai() {
         fontSize: "10px",
         textAlign: "center",
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
+
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -340,16 +278,7 @@ function DaftarSelesai() {
       style: {
         fontSize: "10px",
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
+
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -370,16 +299,6 @@ function DaftarSelesai() {
         fontSize: "10px",
         textAlign: "center",
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -390,7 +309,6 @@ function DaftarSelesai() {
         paddingTop: "1rem",
         paddingBottom: "1rem",
         cursor: "pointer",
-        // width: '100px',
       },
     },
     {
@@ -400,16 +318,6 @@ function DaftarSelesai() {
       style: {
         fontSize: "10px",
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -429,16 +337,7 @@ function DaftarSelesai() {
       style: {
         fontSize: "10px",
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
+
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -458,16 +357,6 @@ function DaftarSelesai() {
       style: {
         fontSize: "10px",
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -487,16 +376,7 @@ function DaftarSelesai() {
       style: {
         fontSize: "10px",
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
+
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -508,10 +388,6 @@ function DaftarSelesai() {
         paddingBottom: "1rem",
         cursor: "pointer",
       },
-      // formatter: cell => selectOptions[cell],
-      // filter: selectFilter({
-      //   options: selectOptions
-      // })
     },
     {
       dataField: "tgl_alm",
@@ -520,16 +396,6 @@ function DaftarSelesai() {
       style: {
         fontSize: "10px",
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -549,16 +415,7 @@ function DaftarSelesai() {
       style: {
         fontSize: "10px",
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
+
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -579,16 +436,6 @@ function DaftarSelesai() {
       style: {
         fontSize: "10px",
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -606,26 +453,42 @@ function DaftarSelesai() {
       text: "Tindakan",
       formatter: (rowContent, row) => {
         return (
-          <div>
-            <Link onClick={() => editData(row.id, row.nik_alm)}>
-              <button className="button">Edit</button>
-            </Link>
-            <button className="button" onClick={() => deleteData(row.nik_alm)}>
-              Delete
-            </button>
+          <div
+            style={{
+              flexDirection: "row",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-around",
+              gap: 5,
+            }}
+          >
+            <div onClick={() => editData(row.id, row.nik_alm)}>
+              <ModeEditOutlineOutlined
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "#0081CF",
+                  color: "white",
+                  borderRadius: 3,
+                  padding: 3,
+                }}
+              />
+            </div>
+
+            <div onClick={() => deleteData(row.nik_alm)}>
+              <DeleteOutlineOutlined
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "red",
+                  color: "white",
+                  borderRadius: 3,
+                  padding: 3,
+                }}
+              />
+            </div>
           </div>
         );
       },
-      // headerStyle: () => {
-      //   return {
-      //     fontSize: "10px",
-      //     width: "5%",
-      //     backgroundColor: "grey",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   };
-      // },
-      // headerClasses: 'custom-header-style',
+
       headerStyle: {
         backgroundColor: "grey",
         color: "#000000",
@@ -640,106 +503,79 @@ function DaftarSelesai() {
     },
   ];
 
-  const sizePerPageList = [
-    { text: "10", value: 10, className: "my-custom-page-size" },
-    { text: "25", value: 25, className: "my-custom-page-size" },
-    { text: "50", value: 50, className: "my-custom-page-size" },
-    { text: "100", value: 100, className: "my-custom-page-size" },
-    // { text: "200", value: 200, className: "my-custom-page-size" },
-  ];
-
-  const customTotal = (from, to, size) => (
-    <span className="react-bootstrap-table-pagination-total">
-      menampilkan { from } hingga { to } dari { size } data
-    </span>
-  );
-
   const options = {
     paginationSize: 3,
     pageStartIndex: 1,
     // showTotal: true,
     // paginationTotalRenderer: customTotal,
-    // disablePageTitle: true,
-    sizePerPageList : [
+    disablePageTitle: true,
+    sizePerPageList: [
       { text: "10", value: 10, className: "my-custom-page-size" },
       { text: "25", value: 25, className: "my-custom-page-size" },
       { text: "50", value: 50, className: "my-custom-page-size" },
       { text: "100", value: 100, className: "my-custom-page-size" },
-      // { text: "200", value: 200, className: "my-custom-page-size" },
-    ]
+    ],
+  };
+
+  if (isError || isLoading) {
+    return <div className="loading"></div>;
   }
 
-  // const options = {
-  //   paginationSize: 5,
-  //   pageStartIndex: 1,
-  //   sizePerPage: 10,
-  //   hideSizePerPage: false,
-  //   hidePageListOnlyOnePage: false,
-  //   showTotal: true,
-  //   // ...customStyles,
-  // };
-
-  if (error) {
-    return <div>ErrorL {error.message}</div>;
-  } else if (!isLoaded) {
-    return <div className="loading"></div>;
-  } else {
-    return (
-      <main className="body">
-        <div className="datatableTitle">
-          Data Pengambilan Dana Santunan Kematian Selesai Diproses
-        </div>
-        {/* <div className="excel">
-          <button onClick={handleExport} className="export-excel">
-            export to excel
-          </button>
-        </div> */}
-        
-        <ToolkitProvider
-          keyField="id"
-          data={numberedData}
-          columns={columns}
-          bootstrap4
-          search
-          defaultSorted={defaultSorted}
-          // filter={ filterFactory() }
-        >
-          {(props) => (
-            <div>
-              <Row>
-                <Col>
-                  <div className="float-right">
+  return (
+    <main className="body">
+      <div className="datatableTitle">
+        Data Pengambilan Dana Santunan Kematian Selesai Diproses
+      </div>
+      <ToolkitProvider
+        keyField="id"
+        data={numberedData}
+        columns={columns}
+        bootstrap4
+        search
+        defaultSorted={defaultSorted}
+        filter={filterFactory()}
+      >
+        {(props) => (
+          <div>
+            <Row>
+              <Col>
+                <div className="filter">
+                  <div className="search">
                     <SearchBar
                       {...props.searchProps}
                       placeholder="Search .."
                       searchPlaceholder=""
+                      
                     />
                   </div>
-                </Col>
-              </Row>
+                  <div className="year">
+                    <SelectYear
+                      selectedOption={selectedOption}
+                      setSelectedOption={setSelectedOption}
+                      isOptionSelected={isOptionSelected}
+                      changeTextColor={changeTextColor}
+                    />
+                  </div>
+                </div>
+              </Col>
+            </Row>
 
-              
-              <BootstrapTable
-                {...props.baseProps}
-                pagination={paginationFactory(options)}
-                // pagination={paginationFactory(options)}
-                wrapperClasses="table-responsive"
-                filter={ filterFactory() }
-              />
-              {/* <ExportCSVButton {...props.csvProps}>
-                Export CSV!!
-              </ExportCSVButton> */}
-            </div>
-          )}
-        </ToolkitProvider>
-        <div className="excel">
-          <button onClick={handleExport} className="export-excel">
-            <span>Export to Excel</span>
-          </button>
-        </div>
-      </main>
-    );
-  }
+            <BootstrapTable
+              {...props.baseProps}
+              pagination={paginationFactory(options)}
+              wrapperClasses="table-responsive"
+              filter={filterFactory()}
+            />
+          </div>
+        )}
+      </ToolkitProvider>
+      <div className="excel">
+        <button onClick={handleExport} className="export-excel">
+          <span>Export to Excel</span>
+        </button>
+      </div>
+    </main>
+  );
 }
 
 export default DaftarSelesai;

@@ -106,7 +106,7 @@ function TambahAkun() {
       <div className="footer fixed-bottom">
         <div className="container">
           <div align="center">
-            <small>Sistem Penyaluran Dana Santunan Kematian &copy; 2022</small>
+            <small>Sistem Penyaluran Dana Santunan Kematian &copy; 2024</small>
           </div>
         </div>
       </div>

@@ -1,8 +1,8 @@
-.row>* {
+.row > * {
   width: 20%;
 }
 
-.react-bootstrap-table-pagination{
+.react-bootstrap-table-pagination {
   /* justify-content: space-around; */
 }
 .col-lg-6 {
@@ -14,17 +14,16 @@
   /* margin-right: 40%; */
 }
 
-.react-bootstrap-table-page-btns-ul{
+.react-bootstrap-table-page-btns-ul {
   gap: 0em !important;
 }
 
-
 @media (max-width: 600px) {
-  .row>* {
+  .row > * {
     width: 25% !important;
   }
 
-  .react-bootstrap-table-pagination{
+  .react-bootstrap-table-pagination {
     /* justify-content: flex-start; */
   }
 
@@ -36,5 +35,35 @@
   }
   .page-item:not(:first-child) .page-link {
     /* margin-left: -10px; */
+  }
+  .filter {
+    gap: 5px;
+  }
+
+  .select-limit {
+    width: 100px;
+    border: 2px solid #3498db;
+  }
+
+  .year {
+    margin-bottom: -10px;
+  }
 }
+
+.filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.search {
+  align-items: center;
+  display: flex;
+}
+
+.year {
+  align-items: center;
+  display: flex;
 }

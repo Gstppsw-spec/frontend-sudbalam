@@ -2,64 +2,12 @@ import React from "react";
 import "../style/widget.scss";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
-import { useEffect } from "react";
-import axios from "axios";
-import { useState } from "react";
-import moment from "moment/moment";
+import { useDashboardQuery } from "../api/dashboard/useDashboardQuery";
 
 const Widget = ({ type }) => {
-  const [products, setProducts] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [filteredBulan, setFilteredBulan] = useState([]);
-  const [filteredTanggal, setFilteredTanggal] = useState([]);
-  const [filteredTahun, setFilteredTahun] = useState([]);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    await axios
-      .get(`https://subdomain.sudbalam.com/api/dataterima`)
-      .then(({ data }) => {
-        setProducts(data);
-        setIsLoaded(true);
-      });
-  };
-
-  const tahun = new Date().getFullYear();
-  const month = new Date().getMonth();
-  const tanggal = new Date().getDate();
-
-  useEffect(() => {
-    setFilteredTahun(
-      products.filter(
-        (product) => new Date(product.tlg_pembayaran).getFullYear() === tahun
-      )
-    );
-  }, [products]);
-
-  useEffect(() => {
-    setFilteredBulan(
-      products.filter(
-        (product) =>
-          new Date(product.tlg_pembayaran).getMonth() === month &&
-          new Date(product.tlg_pembayaran).getFullYear() === tahun
-      )
-    );
-  }, [products]);
-
-  useEffect(() => {
-    setFilteredTanggal(
-      products.filter(
-        (product) =>
-          new Date(product.tlg_pembayaran).getDate() === tanggal &&
-          new Date(product.tlg_pembayaran).getMonth() === month &&
-          new Date(product.tlg_pembayaran).getFullYear() === tahun
-      )
-    );
-  }, [products]);
-
+  const { data: dataDashboard, isLoading, isError } = useDashboardQuery();
+  
   let data;
 
   switch (type) {
@@ -67,7 +15,9 @@ const Widget = ({ type }) => {
       data = {
         title: "JUMLAH PENCAIRAN DANA SEPANJANG WAKTU",
         isMoney: false,
-        amount: products.length,
+        amount: dataDashboard?.jumlahpencairan
+          ? dataDashboard?.jumlahpencairan
+          : 0,
         isJumlah: true,
         icon: (
           <PersonOutlinedIcon
@@ -84,7 +34,9 @@ const Widget = ({ type }) => {
       data = {
         title: "ANGGARAN DANA SANTUNAN KEMATIAN KELUAR SEPANJANG WAKTU",
         isMoney: true,
-        amount: products.length * 1000000,
+        amount: dataDashboard?.jumlahdana
+          ? (dataDashboard?.jumlahdana).toLocaleString("id-ID")
+          : 0,
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -98,7 +50,7 @@ const Widget = ({ type }) => {
         title: "JUMLAH DISALURKAN TAHUN INI",
         isMoney: false,
         isJumlah: true,
-        amount: filteredTahun.length,
+        amount: dataDashboard?.tahun ? dataDashboard?.tahun : 0,
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -115,7 +67,7 @@ const Widget = ({ type }) => {
         title: "JUMLAH DISALURKAN BULAN INI",
         isMoney: false,
         isJumlah: true,
-        amount: filteredBulan.length,
+        amount: dataDashboard?.bulan ? dataDashboard?.bulan : 0,
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -132,7 +84,7 @@ const Widget = ({ type }) => {
         title: "JUMLAH DISALURKAN HARI INI",
         isMoney: false,
         isJumlah: true,
-        amount: filteredTanggal.length,
+        amount: dataDashboard?.hari ? dataDashboard?.hari : 0,
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -148,7 +100,7 @@ const Widget = ({ type }) => {
       break;
   }
 
-  if (!isLoaded) {
+  if (isLoading) {
     return <div className="loading-widget"></div>;
   } else {
     return (

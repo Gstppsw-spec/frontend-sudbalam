@@ -9,7 +9,7 @@ function KontakInformasi() {
       <hr />
       <div className="informasi-kontak">
         <div className="baris-kontak">
-          <div className="kolom-kontak">
+          {/* <div className="kolom-kontak">
             <label>081279021312 (WIKO SAPUTRA, SE)</label>
             <hr />
 
@@ -26,7 +26,7 @@ function KontakInformasi() {
                 window.location.href = `https://wa.me/+6281279021312?text=&`;
               }}
             ></img>
-          </div>
+          </div> */}
 
           <div className="kolom-kontak">
             <label>082282250886 (TOMMY PRATAMA)</label>

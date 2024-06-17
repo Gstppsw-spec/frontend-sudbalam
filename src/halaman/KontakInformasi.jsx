@@ -30,7 +30,7 @@ function KontakInformasi() {
                 height="20"
                 src={wa}
                 onClick={() => {
-                  window.location.href = `https://wa.me/+6282282250886?text=&`;
+                  window.location.href = `https://wa.me/${contact.no_wa.replace(/^0/, "+62")}?text=&`;
                 }}
               ></img>
             </div>
